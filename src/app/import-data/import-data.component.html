@@ -1,3 +1,11 @@
 <p>Sélectioner les fichiers à importer</p>
 <input type="file" (change)="onChange($event.target.files)" />
 <p *ngIf="importFinish">Import fini</p>
+
+<h2>
+  Données :
+</h2>
+<p>Nombre de ligne {{ linecount | async }}</p>
+<p *ngIf="limits | async as limitval">Du {{ limitval.first | date }} au {{ limitval.last | date }}</p>
+
+<app-tip-table [update]="dataUpdated"></app-tip-table>

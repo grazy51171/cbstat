@@ -10,8 +10,31 @@ export class StatTokenService {
 
   constructor() {}
 
-  public async getAlls() {
+  public async alls() {
     return cbStatisticDb.tipList.toArray();
+  }
+
+  public async allPaginate(pageSize: number, pageIndex: number) {
+    return cbStatisticDb.tipList
+      .offset(pageSize * pageIndex)
+      .limit(pageSize)
+      .toArray();
+  }
+
+  public async count() {
+    return cbStatisticDb.tipList.count();
+  }
+
+  public async limits() {
+    const first = await cbStatisticDb.tipList.limit(1).first();
+    const last = await cbStatisticDb.tipList
+      .reverse()
+      .limit(1)
+      .first();
+    if (first && last) {
+      return { first: first.date, last: last.date };
+    }
+    return null;
   }
 
   public async import(csvFile: string) {

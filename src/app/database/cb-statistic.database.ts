@@ -1,6 +1,6 @@
 import Dexie from 'dexie';
 
-interface ITransaction {
+export interface ITransaction {
   date: Date;
   tokenChange: number;
   tokenBalance: number;
