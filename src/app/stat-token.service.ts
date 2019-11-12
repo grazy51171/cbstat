@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { cbStatisticDb } from './database/cb-statistic.database';
-import { DateTime, Zone } from 'luxon';
+import { DateTime } from 'luxon';
+import { state } from '@angular/animations';
 
 @Injectable({
   providedIn: 'root'
@@ -21,6 +22,46 @@ export class StatTokenService {
       .toArray();
   }
 
+  public async sumByUser(positive: boolean) {
+    const stat = new Map<string, number>();
+
+    const list = cbStatisticDb.tipList.filter((t) => (positive ? t.tokenChange > 0 : t.tokenChange < 0));
+
+    await list.each((transac) => {
+      if (stat.has(transac.user)) {
+        stat.set(transac.user, (positive ? 1 : -1) * transac.tokenChange + stat.get(transac.user));
+      } else {
+        stat.set(transac.user, (positive ? 1 : -1) * transac.tokenChange);
+      }
+    });
+    return stat;
+  }
+
+  public async sumByDay(positive: boolean) {
+    const stat = new Map<string, Map<string, number>>();
+    const list = cbStatisticDb.tipList.filter((t) => (positive ? t.tokenChange > 0 : t.tokenChange < 0));
+    await list.each((transac) => {
+      const date = DateTime.fromJSDate(transac.date)
+        .startOf('day')
+        .toISODate();
+
+      let userStat: Map<string, number>;
+      if (stat.has(date)) {
+        userStat = stat.get(date);
+      } else {
+        userStat = new Map<string, number>();
+        stat.set(date, userStat);
+      }
+
+      if (userStat.has(transac.user)) {
+        userStat.set(transac.user, (positive ? 1 : -1) * transac.tokenChange + userStat.get(transac.user));
+      } else {
+        userStat.set(transac.user, (positive ? 1 : -1) * transac.tokenChange);
+      }
+    });
+    return stat;
+  }
+
   public async count() {
     return cbStatisticDb.tipList.count();
   }
@@ -35,6 +76,10 @@ export class StatTokenService {
       return { first: first.date, last: last.date };
     }
     return null;
+  }
+
+  public async deleteAll() {
+    await cbStatisticDb.tipList.clear();
   }
 
   public async import(csvFile: string) {

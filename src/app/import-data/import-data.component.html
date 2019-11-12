@@ -1,7 +1,14 @@
 <p>Sélectioner les fichiers à importer</p>
-<input type="file" (change)="onChange($event.target.files)" />
-<p *ngIf="importFinish">Import fini</p>
 
+<mat-form-field>
+  <ngx-mat-file-input placeholder="Fichier à importer" (change)="onChange($event.target.files)"></ngx-mat-file-input>
+  <mat-icon matSuffix>folder</mat-icon>
+</mat-form-field>
+<p *ngIf="importProgress">Import en cours.</p>
+<p *ngIf="importFinish">Import fini.</p>
+<div>
+  <button mat-raised-button color="warn" (click)="callDeleteData()">Effacer les données</button>
+</div>
 <h2>
   Données :
 </h2>

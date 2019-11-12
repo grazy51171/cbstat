@@ -18,16 +18,23 @@ import { TipTableComponent } from './tip-table/tip-table.component';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
+import { TipByUserComponent } from './tip-by-user/tip-by-user.component';
+import { ChartsModule } from 'ng2-charts';
+import { MaterialFileInputModule } from 'ngx-material-file-input';
+import { MatFormFieldModule, MatCheckbox, MatCheckboxModule, MatRadioModule, MatCardModule } from '@angular/material';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { TipByDateComponent } from './tip-by-date/tip-by-date.component';
 
 registerLocaleData(localeFr, 'fr');
 
 @NgModule({
-  declarations: [AppComponent, ImportDataComponent, MainNavComponent, TipTableComponent],
+  declarations: [AppComponent, ImportDataComponent, MainNavComponent, TipTableComponent, TipByUserComponent, TipByDateComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     LayoutModule,
+    ReactiveFormsModule,
     MatToolbarModule,
     MatButtonModule,
     MatSidenavModule,
@@ -35,7 +42,13 @@ registerLocaleData(localeFr, 'fr');
     MatListModule,
     MatTableModule,
     MatPaginatorModule,
-    MatSortModule
+    MatSortModule,
+    MatFormFieldModule,
+    MatCheckboxModule,
+    MatRadioModule,
+    MatCardModule,
+    ChartsModule,
+    MaterialFileInputModule
   ],
   providers: [{ provide: LOCALE_ID, useValue: 'fr' }],
   bootstrap: [AppComponent]

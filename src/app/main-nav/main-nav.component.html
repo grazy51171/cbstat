@@ -10,8 +10,8 @@
     <mat-toolbar>Menu</mat-toolbar>
     <mat-nav-list>
       <a mat-list-item [routerLink]="['/import']" routerLinkActive="list-item-active">Import ficher</a>
-      <a mat-list-item href="#">Link 2</a>
-      <a mat-list-item href="#">Link 3</a>
+      <a mat-list-item [routerLink]="['/byuser']" routerLinkActive="list-item-active">Graph par utilisateur</a>
+      <a mat-list-item [routerLink]="['/bydate']" routerLinkActive="list-item-active">Graph par date</a>
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>

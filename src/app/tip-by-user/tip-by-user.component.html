@@ -1,0 +1,31 @@
+<mat-card>
+  <mat-card-content>
+    <form class="config-contener" [formGroup]="graphOptions">
+      <section>
+        <label>Type de vue : </label>
+        <mat-radio-group formControlName="typeUser">
+          <mat-radio-button value="modele">Vue modéle (gain de token)</mat-radio-button>
+          <mat-radio-button value="tipper">Vue tipper (envoie de token)</mat-radio-button>
+        </mat-radio-group>
+      </section>
+      <section>
+        <label>Type de graphique :</label>
+        <mat-radio-group formControlName="chartType">
+          <mat-radio-button value="bar">Barres</mat-radio-button>
+          <mat-radio-button value="pie">Camembert</mat-radio-button>
+        </mat-radio-group>
+      </section>
+    </form>
+  </mat-card-content>
+</mat-card>
+<mat-divider></mat-divider>
+<div>
+  <canvas
+    baseChart
+    [data]="chartData"
+    [labels]="chartLabels"
+    [chartType]="chartType"
+    [options]="chartOptions"
+    [legend]="chartLegend"
+  ></canvas>
+</div>
