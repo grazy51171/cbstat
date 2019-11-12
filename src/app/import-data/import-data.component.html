@@ -1,0 +1,3 @@
+<p>Sélectioner les fichiers à importer</p>
+<input type="file" (change)="onChange($event.target.files)" />
+<p *ngIf="importFinish">Import fini</p>
