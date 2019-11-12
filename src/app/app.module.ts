@@ -21,14 +21,28 @@ import { MatSortModule } from '@angular/material/sort';
 import { TipByUserComponent } from './tip-by-user/tip-by-user.component';
 import { ChartsModule } from 'ng2-charts';
 import { MaterialFileInputModule } from 'ngx-material-file-input';
-import { MatFormFieldModule, MatCheckbox, MatCheckboxModule, MatRadioModule, MatCardModule } from '@angular/material';
+import {
+  MatFormFieldModule,
+  MatCheckbox,
+  MatCheckboxModule,
+  MatRadioModule,
+  MatCardModule,
+  MatProgressSpinnerModule
+} from '@angular/material';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TipByDateComponent } from './tip-by-date/tip-by-date.component';
 
 registerLocaleData(localeFr, 'fr');
 
 @NgModule({
-  declarations: [AppComponent, ImportDataComponent, MainNavComponent, TipTableComponent, TipByUserComponent, TipByDateComponent],
+  declarations: [
+    AppComponent,
+    ImportDataComponent,
+    MainNavComponent,
+    TipTableComponent,
+    TipByUserComponent,
+    TipByDateComponent
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -46,6 +60,7 @@ registerLocaleData(localeFr, 'fr');
     MatFormFieldModule,
     MatCheckboxModule,
     MatRadioModule,
+    MatProgressSpinnerModule,
     MatCardModule,
     ChartsModule,
     MaterialFileInputModule

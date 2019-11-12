@@ -7,7 +7,8 @@ import { TipByDateComponent } from './tip-by-date/tip-by-date.component';
 const routes: Routes = [
   { path: 'import', component: ImportDataComponent },
   { path: 'byuser', component: TipByUserComponent },
-  { path: 'bydate', component: TipByDateComponent }
+  { path: 'bydate', component: TipByDateComponent },
+  { path: '**', redirectTo: 'import' }
 ];
 
 @NgModule({

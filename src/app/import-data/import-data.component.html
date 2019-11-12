@@ -1,10 +1,19 @@
+<h2>Import</h2>
+<p>
+  Pour faire les graphique de statistique il est nécessaire d'importer les données télécharger depuis ce chaturbate à
+  cette url
+  <a href="https://fr.chaturbate.com/tipping/csv/history/" target="_blank" rel="noopener"
+    >https://fr.chaturbate.com/tipping/csv/history/</a
+  >
+</p>
+
 <p>Sélectioner les fichiers à importer</p>
 
 <mat-form-field>
   <ngx-mat-file-input placeholder="Fichier à importer" (change)="onChange($event.target.files)"></ngx-mat-file-input>
   <mat-icon matSuffix>folder</mat-icon>
 </mat-form-field>
-<p *ngIf="importProgress">Import en cours.</p>
+<p *ngIf="importProgress"><mat-spinner></mat-spinner> Import en cours.</p>
 <p *ngIf="importFinish">Import fini.</p>
 <div>
   <button mat-raised-button color="warn" (click)="callDeleteData()">Effacer les données</button>
