@@ -7,7 +7,28 @@
         >https://fr.chaturbate.com/tipping/csv/history/</a
       >
     </p>
+
+    <ul>
+      <li>
+        Cliquer sur le lien
+        <a href="https://fr.chaturbate.com/tipping/csv/history/" target="_blank" rel="noopener"
+          >https://fr.chaturbate.com/tipping/csv/history/</a
+        >, celà va télécharger les données du dernier mois depuis chaturbate dans un fichier "transactions.csv".
+      </li>
+      <li>
+        Cliquer sur "Fichier à importer" ci dessous pour le charger dans l'application (celà peut prendre quelques
+        minutes).
+      </li>
+      <li>
+        Puis selectionner à gauche le graphique souhaité.
+      </li>
+      <li>
+        Si c'est un ordinateur partagé, n'oubliez pas de cliquer sur "Effacer les données" une fois que vous avez fini.
+      </li>
+    </ul>
+
     <p>Toutes les données sont stocké en local dans le navigateur, rien n'est envoyé sur internet.</p>
+    <p>Vous pouvez charger plusieurs fichier un après l'autre.</p>
   </mat-card-content>
 </mat-card>
 <mat-divider></mat-divider>
@@ -18,7 +39,8 @@
 
     <mat-form-field>
       <ngx-mat-file-input
-        placeholder="Fichier à importer"
+        accept=".csv"
+        placeholder="Fichier à importer (transactions.csv)"
         (change)="onChange($event.target.files)"
       ></ngx-mat-file-input>
       <mat-icon matSuffix>folder</mat-icon>
