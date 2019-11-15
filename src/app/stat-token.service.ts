@@ -62,6 +62,29 @@ export class StatTokenService {
     return stat;
   }
 
+  public async sumByDayOfWeek(positive: boolean) {
+    const stat = new Map<number, Map<string, number>>();
+    const list = cbStatisticDb.tipList.filter((t) => (positive ? t.tokenChange > 0 : t.tokenChange < 0));
+    await list.each((transac) => {
+      const wheekday = DateTime.fromJSDate(transac.date).weekday;
+
+      let userStat: Map<string, number>;
+      if (stat.has(wheekday)) {
+        userStat = stat.get(wheekday);
+      } else {
+        userStat = new Map<string, number>();
+        stat.set(wheekday, userStat);
+      }
+
+      if (userStat.has(transac.user)) {
+        userStat.set(transac.user, (positive ? 1 : -1) * transac.tokenChange + userStat.get(transac.user));
+      } else {
+        userStat.set(transac.user, (positive ? 1 : -1) * transac.tokenChange);
+      }
+    });
+    return stat;
+  }
+
   public async count() {
     return cbStatisticDb.tipList.count();
   }

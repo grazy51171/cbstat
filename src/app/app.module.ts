@@ -31,6 +31,7 @@ import {
 } from '@angular/material';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TipByDateComponent } from './tip-by-date/tip-by-date.component';
+import { TipByWeekdayComponent } from './tip-by-weekday/tip-by-weekday.component';
 
 registerLocaleData(localeFr, 'fr');
 
@@ -41,7 +42,8 @@ registerLocaleData(localeFr, 'fr');
     MainNavComponent,
     TipTableComponent,
     TipByUserComponent,
-    TipByDateComponent
+    TipByDateComponent,
+    TipByWeekdayComponent
   ],
   imports: [
     BrowserModule,
