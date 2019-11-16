@@ -1,12 +1,16 @@
 import { Injectable } from '@angular/core';
-import { cbStatisticDb } from './database/cb-statistic.database';
 import { DateTime } from 'luxon';
-import { state } from '@angular/animations';
+import { from, Observable } from 'rxjs';
+import { map, filter, bufferCount, flatMap, toArray } from 'rxjs/operators';
+import * as FileSaver from 'file-saver';
+
+import { cbStatisticDb, ITransaction } from './database/cb-statistic.database';
 
 @Injectable({
   providedIn: 'root'
 })
 export class StatTokenService {
+  private static fileDataRegexp = /"(\d\d\d\d-\d\d-\d\d \d\d:\d\d:\d\d.\d\d\d)\d\d\d",(-?\d*),(-?\d*),"(.*)","(.*)","(.*)"/u;
   private readonly cbTimeZone = 'America/Denver';
 
   constructor() {}
@@ -105,20 +109,16 @@ export class StatTokenService {
     await cbStatisticDb.tipList.clear();
   }
 
-  public async import(csvFile: string) {
+  public import(csvFile: string) {
     const lines = csvFile.split(/\r\n|\n/);
 
     // Remove header
     lines.shift();
-    await Promise.all(lines.map((l) => this.importLine(l)));
-  }
 
-  private async importLine(csvLine: string) {
-    const matches = csvLine.match(
-      /"(\d\d\d\d-\d\d-\d\d \d\d:\d\d:\d\d.\d\d\d)\d\d\d",(-?\d*),(-?\d*),"(.*)","(.*)","(.*)"/u
-    );
-    if (matches) {
-      const val = {
+    return from(lines).pipe(
+      map((csvLine) => csvLine.match(StatTokenService.fileDataRegexp)),
+      filter((matches) => !!matches),
+      map((matches) => ({
         date: DateTime.fromFormat(matches[1], 'yyyy-MM-dd HH:mm:ss.SSS', { zone: this.cbTimeZone })
           .toLocal()
           .toJSDate(),
@@ -127,8 +127,33 @@ export class StatTokenService {
         type: matches[4],
         user: matches[5],
         note: matches[6]
-      };
-      await cbStatisticDb.tipList.put(val);
-    }
+      })),
+      bufferCount(500),
+      flatMap((val) => from(cbStatisticDb.tipList.bulkPut(val)))
+    );
+  }
+
+  public export() {
+    return new Observable<ITransaction>((subcribe) => {
+      cbStatisticDb.tipList
+        .each((obj) => subcribe.next(obj))
+        .then(() => {
+          subcribe.complete();
+        });
+    }).pipe(
+      map((val) => {
+        const dateStr = DateTime.fromJSDate(val.date, { zone: 'local' })
+          .setZone(this.cbTimeZone)
+          .toFormat('yyyy-MM-dd HH:mm:ss.SSS');
+        return `"${dateStr}000",${val.tokenChange},${val.tokenBalance},"${val.type}","${val.user}","${val.note}"\r\n`;
+      }),
+      toArray(),
+      map((lines) => {
+        lines.unshift('"Timestamp","Token change","Token balance","Transaction type","User","Note"\r\n');
+        return lines.join('');
+      }),
+      map((fileLines) => new Blob([fileLines], { type: 'text/plain;charset=utf-8' })),
+      map((blob) => FileSaver.saveAs(blob, 'transactions-export.csv'))
+    );
   }
 }

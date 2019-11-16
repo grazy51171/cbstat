@@ -48,6 +48,7 @@
     <p *ngIf="importProgress"><mat-spinner></mat-spinner> Import en cours.</p>
     <p *ngIf="importFinish">Import fini.</p>
     <div>
+      <button mat-raised-button color="primary" (click)="callExport()">Exporter les données</button>
       <button mat-raised-button color="warn" (click)="callDeleteData()">Effacer les données</button>
     </div>
   </mat-card-content>

@@ -32,18 +32,31 @@ export class ImportDataComponent implements OnInit {
     this.importFinish = false;
     const file = fileList[0];
     const fileReader = new FileReader();
-    fileReader.onloadend = () => {
-      this.statToken.import(fileReader.result as string).then(() => {
-        this.importFinish = true;
-        this.importProgress = false;
 
-        this.dataUpdated.next();
-      });
+    fileReader.onloadend = () => {
+      this.statToken.import(fileReader.result as string).subscribe(
+        () => {
+          this.importFinish = true;
+          this.importProgress = false;
+
+          this.dataUpdated.next();
+        },
+        (error) => {
+          console.log(error);
+          this.importFinish = true;
+          this.importProgress = false;
+          this.dataUpdated.next();
+        }
+      );
     };
     fileReader.readAsText(file);
   }
 
   public callDeleteData() {
     this.statToken.deleteAll().then(() => this.dataUpdated.next());
+  }
+
+  public callExport() {
+    this.statToken.export().subscribe();
   }
 }
