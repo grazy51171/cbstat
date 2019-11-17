@@ -8,8 +8,6 @@ declare const firebase: any;
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'cbstats';
-
   constructor() {
     try {
       firebase.analytics();

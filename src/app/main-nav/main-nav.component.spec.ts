@@ -1,4 +1,5 @@
 import { LayoutModule } from '@angular/cdk/layout';
+import { Component } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MatButtonModule } from '@angular/material/button';
@@ -6,8 +7,14 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { RouterTestingModule } from '@angular/router/testing';
 
 import { MainNavComponent } from './main-nav.component';
+
+@Component({
+  template: ''
+})
+class DummyComponent {}
 
 describe('MainNavComponent', () => {
   let component: MainNavComponent;
@@ -15,7 +22,7 @@ describe('MainNavComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [MainNavComponent],
+      declarations: [MainNavComponent, DummyComponent],
       imports: [
         NoopAnimationsModule,
         LayoutModule,
@@ -24,6 +31,7 @@ describe('MainNavComponent', () => {
         MatListModule,
         MatSidenavModule,
         MatToolbarModule,
+        RouterTestingModule.withRoutes([])
       ]
     }).compileComponents();
   }));
@@ -37,4 +45,6 @@ describe('MainNavComponent', () => {
   it('should compile', () => {
     expect(component).toBeTruthy();
   });
+
+  // TODO test routes
 });

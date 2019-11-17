@@ -5,26 +5,25 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 
 import { TipTableComponent } from './tip-table.component';
+import { Subject } from 'rxjs';
 
 describe('TipTableComponent', () => {
   let component: TipTableComponent;
   let fixture: ComponentFixture<TipTableComponent>;
+  let updateSubject: Subject<void>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ TipTableComponent ],
-      imports: [
-        NoopAnimationsModule,
-        MatPaginatorModule,
-        MatSortModule,
-        MatTableModule,
-      ]
+      declarations: [TipTableComponent],
+      imports: [NoopAnimationsModule, MatPaginatorModule, MatSortModule, MatTableModule]
     }).compileComponents();
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(TipTableComponent);
     component = fixture.componentInstance;
+    updateSubject = new Subject<void>();
+    component.update = updateSubject;
     fixture.detectChanges();
   });
 

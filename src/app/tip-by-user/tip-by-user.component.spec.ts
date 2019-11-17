@@ -1,6 +1,9 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatCardModule, MatRadioModule, MatDividerModule } from '@angular/material';
+import { ReactiveFormsModule } from '@angular/forms';
 
 import { TipByUserComponent } from './tip-by-user.component';
+import { ChartsModule } from 'ng2-charts';
 
 describe('TipByUserComponent', () => {
   let component: TipByUserComponent;
@@ -8,9 +11,9 @@ describe('TipByUserComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ TipByUserComponent ]
-    })
-    .compileComponents();
+      declarations: [TipByUserComponent],
+      imports: [MatCardModule, MatRadioModule, MatDividerModule, ReactiveFormsModule, ChartsModule]
+    }).compileComponents();
   }));
 
   beforeEach(() => {
