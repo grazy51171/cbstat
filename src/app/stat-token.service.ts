@@ -5,6 +5,7 @@ import { map, filter, bufferCount, flatMap, toArray } from 'rxjs/operators';
 import * as FileSaver from 'file-saver';
 
 import { cbStatisticDb, ITransaction } from './database/cb-statistic.database';
+import Dexie from 'dexie';
 
 @Injectable({
   providedIn: 'root'
@@ -21,6 +22,22 @@ export class StatTokenService {
 
   public async allPaginate(pageSize: number, pageIndex: number) {
     return cbStatisticDb.tipList
+      .offset(pageSize * pageIndex)
+      .limit(pageSize)
+      .toArray();
+  }
+
+  public async allPaginateAndSort(pageSize: number, pageIndex: number, sortKey: string, ascending: boolean) {
+    let query: Dexie.Collection<ITransaction, Date> | Dexie.Table<ITransaction, Date> = cbStatisticDb.tipList;
+    if (sortKey) {
+      query = query.orderBy(sortKey);
+    }
+
+    if (!ascending) {
+      query = query.reverse();
+    }
+
+    return query
       .offset(pageSize * pageIndex)
       .limit(pageSize)
       .toArray();

@@ -2,7 +2,7 @@ import { DataSource } from '@angular/cdk/collections';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { flatMap } from 'rxjs/operators';
-import { Observable, merge, from } from 'rxjs';
+import { Observable, merge, from, BehaviorSubject } from 'rxjs';
 import { ITransaction } from '../database/cb-statistic.database';
 import { StatTokenService } from '../stat-token.service';
 
@@ -12,8 +12,9 @@ import { StatTokenService } from '../stat-token.service';
  * (including sorting, pagination, and filtering).
  */
 export class TipTableDataSource extends DataSource<ITransaction> {
-  paginator: MatPaginator;
-  sort: MatSort;
+  public paginator: MatPaginator;
+  public sort: MatSort;
+  private loginFilterSubject = new BehaviorSubject<string>(null);
 
   constructor(private statTokens: StatTokenService, private update: Observable<void>) {
     super();
@@ -24,15 +25,22 @@ export class TipTableDataSource extends DataSource<ITransaction> {
    * the returned stream emits new items.
    * @returns A stream of the items to be rendered.
    */
-  connect(): Observable<ITransaction[]> {
+  public connect(): Observable<ITransaction[]> {
     // Combine everything that affects the rendered data into one update
     // stream for the data-table to consume.
     // observableOf(this.data),
-    const dataMutations = [this.update, this.paginator.page, this.sort.sortChange];
+    const dataMutations = [this.update, this.paginator.page, this.sort.sortChange, this.loginFilterSubject];
 
     return merge(...dataMutations).pipe(
       flatMap(() => {
-        return from(this.statTokens.allPaginate(this.paginator.pageSize, this.paginator.pageIndex));
+        return from(
+          this.statTokens.allPaginateAndSort(
+            this.paginator.pageSize,
+            this.paginator.pageIndex,
+            this.sort.direction ? this.sort.active : null,
+            this.sort.direction === 'asc'
+          )
+        );
       })
     );
   }
@@ -41,5 +49,13 @@ export class TipTableDataSource extends DataSource<ITransaction> {
    *  Called when the table is being destroyed. Use this function, to clean up
    * any open connections or free any held resources that were set up during connect.
    */
-  disconnect() {}
+  public disconnect() {}
+
+  public get loginFilter() {
+    return this.loginFilterSubject.getValue();
+  }
+
+  public set loginFilter(value) {
+    this.loginFilterSubject.next(value);
+  }
 }

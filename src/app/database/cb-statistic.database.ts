@@ -14,13 +14,13 @@ export class CbStatisticDatabase extends Dexie {
 
   constructor() {
     super('CBStaticticDatabase');
+
     this.version(1).stores({
       tipList: 'date'
     });
     this.version(2).stores({
       tipList: 'date, user, type, tokenChange'
     });
-
     this.tipList = this.table('tipList');
   }
 }
