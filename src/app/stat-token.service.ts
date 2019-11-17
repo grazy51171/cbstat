@@ -3,9 +3,9 @@ import { DateTime } from 'luxon';
 import { from, Observable } from 'rxjs';
 import { map, filter, bufferCount, flatMap, toArray } from 'rxjs/operators';
 import * as FileSaver from 'file-saver';
-
-import { cbStatisticDb, ITransaction } from './database/cb-statistic.database';
 import Dexie from 'dexie';
+
+import { ITransaction, CbStatisticDatabase } from './database/cb-statistic.database';
 
 @Injectable({
   providedIn: 'root'
@@ -14,21 +14,21 @@ export class StatTokenService {
   private static fileDataRegexp = /"(\d\d\d\d-\d\d-\d\d \d\d:\d\d:\d\d.\d\d\d)\d\d\d",(-?\d*),(-?\d*),"(.*)","(.*)","(.*)"/u;
   private readonly cbTimeZone = 'America/Denver';
 
-  constructor() {}
+  constructor(private cbStatisticDb: CbStatisticDatabase) {}
 
   public async alls() {
-    return cbStatisticDb.tipList.toArray();
+    return this.cbStatisticDb.tipList.toArray();
   }
 
   public async allPaginate(pageSize: number, pageIndex: number) {
-    return cbStatisticDb.tipList
+    return this.cbStatisticDb.tipList
       .offset(pageSize * pageIndex)
       .limit(pageSize)
       .toArray();
   }
 
   public async allPaginateAndSort(pageSize: number, pageIndex: number, sortKey: string, ascending: boolean) {
-    let query: Dexie.Collection<ITransaction, Date> | Dexie.Table<ITransaction, Date> = cbStatisticDb.tipList;
+    let query: Dexie.Collection<ITransaction, Date> | Dexie.Table<ITransaction, Date> = this.cbStatisticDb.tipList;
     if (sortKey) {
       query = query.orderBy(sortKey);
     }
@@ -46,7 +46,7 @@ export class StatTokenService {
   public async sumByUser(positive: boolean) {
     const stat = new Map<string, number>();
 
-    const list = cbStatisticDb.tipList.filter((t) => (positive ? t.tokenChange > 0 : t.tokenChange < 0));
+    const list = this.cbStatisticDb.tipList.filter((t) => (positive ? t.tokenChange > 0 : t.tokenChange < 0));
 
     await list.each((transac) => {
       if (stat.has(transac.user)) {
@@ -60,7 +60,7 @@ export class StatTokenService {
 
   public async sumByDay(positive: boolean) {
     const stat = new Map<string, Map<string, number>>();
-    const list = cbStatisticDb.tipList.filter((t) => (positive ? t.tokenChange > 0 : t.tokenChange < 0));
+    const list = this.cbStatisticDb.tipList.filter((t) => (positive ? t.tokenChange > 0 : t.tokenChange < 0));
     await list.each((transac) => {
       const date = DateTime.fromJSDate(transac.date)
         .startOf('day')
@@ -85,7 +85,7 @@ export class StatTokenService {
 
   public async sumByDayOfWeek(positive: boolean) {
     const stat = new Map<number, Map<string, number>>();
-    const list = cbStatisticDb.tipList.filter((t) => (positive ? t.tokenChange > 0 : t.tokenChange < 0));
+    const list = this.cbStatisticDb.tipList.filter((t) => (positive ? t.tokenChange > 0 : t.tokenChange < 0));
     await list.each((transac) => {
       const wheekday = DateTime.fromJSDate(transac.date).weekday;
 
@@ -107,12 +107,12 @@ export class StatTokenService {
   }
 
   public async count() {
-    return cbStatisticDb.tipList.count();
+    return this.cbStatisticDb.tipList.count();
   }
 
   public async limits() {
-    const first = await cbStatisticDb.tipList.limit(1).first();
-    const last = await cbStatisticDb.tipList
+    const first = await this.cbStatisticDb.tipList.limit(1).first();
+    const last = await this.cbStatisticDb.tipList
       .reverse()
       .limit(1)
       .first();
@@ -123,7 +123,7 @@ export class StatTokenService {
   }
 
   public async deleteAll() {
-    await cbStatisticDb.tipList.clear();
+    await this.cbStatisticDb.tipList.clear();
   }
 
   public import(csvFile: string) {
@@ -146,13 +146,13 @@ export class StatTokenService {
         note: matches[6]
       })),
       bufferCount(500),
-      flatMap((val) => from(cbStatisticDb.tipList.bulkPut(val)))
+      flatMap((val) => from(this.cbStatisticDb.tipList.bulkPut(val)))
     );
   }
 
   public export() {
     return new Observable<ITransaction>((subcribe) => {
-      cbStatisticDb.tipList
+      this.cbStatisticDb.tipList
         .each((obj) => subcribe.next(obj))
         .then(() => {
           subcribe.complete();

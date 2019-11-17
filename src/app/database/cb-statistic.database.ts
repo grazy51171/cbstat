@@ -1,4 +1,5 @@
 import Dexie from 'dexie';
+import { Injectable } from '@angular/core';
 
 export interface ITransaction {
   date: Date;
@@ -9,6 +10,9 @@ export interface ITransaction {
   note: string;
 }
 
+@Injectable({
+  providedIn: 'root'
+})
 export class CbStatisticDatabase extends Dexie {
   public readonly tipList: Dexie.Table<ITransaction, Date>;
 
@@ -24,5 +28,3 @@ export class CbStatisticDatabase extends Dexie {
     this.tipList = this.table('tipList');
   }
 }
-
-export const cbStatisticDb = new CbStatisticDatabase();
