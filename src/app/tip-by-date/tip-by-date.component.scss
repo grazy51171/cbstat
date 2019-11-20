@@ -3,9 +3,10 @@
     display: flex;
     align-content: center;
     align-items: center;
-    height: 2rem;
+    //  height: 4rem;
   }
-  mat-radio-button {
+  mat-radio-button,
+  mat-form-field {
     margin: 0 10px;
   }
 }

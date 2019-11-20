@@ -27,7 +27,11 @@ import {
   MatCheckboxModule,
   MatRadioModule,
   MatCardModule,
-  MatProgressSpinnerModule
+  MatProgressSpinnerModule,
+  MatDatepickerModule,
+  MatNativeDateModule,
+  MatExpansionModule,
+  MatInputModule
 } from '@angular/material';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TipByDateComponent } from './tip-by-date/tip-by-date.component';
@@ -64,6 +68,10 @@ registerLocaleData(localeFr, 'fr');
     MatRadioModule,
     MatProgressSpinnerModule,
     MatCardModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatInputModule,
+    MatExpansionModule,
     ChartsModule,
     MaterialFileInputModule
   ],

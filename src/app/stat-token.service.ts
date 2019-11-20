@@ -7,11 +7,18 @@ import Dexie from 'dexie';
 
 import { ITransaction, CbStatisticDatabase } from './database/cb-statistic.database';
 
+function isValidDate(d: Date) {
+  return d instanceof Date && !isNaN(d.getTime());
+}
+
 @Injectable({
   providedIn: 'root'
 })
 export class StatTokenService {
   private static fileDataRegexp = /"(\d\d\d\d-\d\d-\d\d \d\d:\d\d:\d\d.\d\d\d)\d\d\d",(-?\d*),(-?\d*),"(.*)","(.*)","(.*)"/u;
+  private static allMinDate = new Date(2000, 0);
+  private static allMaxDate = new Date(3000, 0);
+
   private readonly cbTimeZone = 'America/Denver';
 
   constructor(private cbStatisticDb: CbStatisticDatabase) {}
@@ -58,9 +65,20 @@ export class StatTokenService {
     return stat;
   }
 
-  public async sumByDay(positive: boolean) {
+  public async sumByDay(positive: boolean, dateMin: Date, dateMax: Date) {
+    console.log('Datemin,max', dateMin, dateMax, JSON.stringify(dateMax));
+
     const stat = new Map<string, Map<string, number>>();
-    const list = this.cbStatisticDb.tipList.filter((t) => (positive ? t.tokenChange > 0 : t.tokenChange < 0));
+    const dataSelect = this.cbStatisticDb.tipList
+      .where('date')
+      .inAnyRange([
+        [
+          isValidDate(dateMin) ? dateMin : StatTokenService.allMinDate,
+          isValidDate(dateMax) ? dateMax : StatTokenService.allMaxDate
+        ]
+      ]);
+
+    const list = dataSelect.filter((t) => (positive ? t.tokenChange > 0 : t.tokenChange < 0));
     await list.each((transac) => {
       const date = DateTime.fromJSDate(transac.date)
         .startOf('day')

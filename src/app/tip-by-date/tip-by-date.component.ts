@@ -2,8 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { ChartOptions, ChartType, ChartDataSets } from 'chart.js';
 import { Label } from 'ng2-charts';
 import { FormGroup, FormBuilder } from '@angular/forms';
-import { StatTokenService } from '../stat-token.service';
 import { DateTime } from 'luxon';
+import { from, Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+
+import { StatTokenService } from '../stat-token.service';
 
 @Component({
   selector: 'app-tip-by-date',
@@ -48,22 +51,37 @@ export class TipByDateComponent implements OnInit {
 
   public graphOptions: FormGroup;
 
+  public dateLimits: Observable<{ first: Date; last: Date }>;
+
   private readonly defaultOptions = {
     typeUser: 'tipper',
-    chartType: 'bar' as ChartType
+    chartType: 'bar' as ChartType,
+    dateMin: null as Date,
+    dateMax: null as Date
   };
   constructor(private statToken: StatTokenService, private formBuilder: FormBuilder) {
     this.graphOptions = formBuilder.group(this.defaultOptions);
   }
 
   ngOnInit() {
+    this.dateLimits = from(this.statToken.limits());
     this.updateGraph(this.defaultOptions);
-    this.graphOptions.valueChanges.subscribe((val) => this.updateGraph(val));
+    this.graphOptions.valueChanges
+      .pipe(
+        map((v) =>
+          Object.assign({}, v, {
+            dateMax: DateTime.fromJSDate(v.dateMax)
+              .plus({ day: 1 })
+              .toJSDate()
+          })
+        )
+      )
+      .subscribe((val) => this.updateGraph(val));
   }
 
-  private updateGraph(val: { chartType: ChartType; typeUser: string }) {
+  private updateGraph(val: { chartType: ChartType; typeUser: string; dateMin: Date; dateMax: Date }) {
     this.chartType = val.chartType;
-    this.statToken.sumByDay(val.typeUser !== 'tipper').then((tipByDate) => {
+    this.statToken.sumByDay(val.typeUser !== 'tipper', val.dateMin, val.dateMax).then((tipByDate) => {
       const dateList = Array.from(tipByDate.keys());
 
       const listUser = Array.from(
