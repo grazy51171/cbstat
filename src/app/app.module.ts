@@ -33,9 +33,10 @@ import {
   MatExpansionModule,
   MatInputModule
 } from '@angular/material';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { TipByDateComponent } from './tip-by-date/tip-by-date.component';
 import { TipByWeekdayComponent } from './tip-by-weekday/tip-by-weekday.component';
+import { TipBySizeComponent } from './tip-by-size/tip-by-size.component';
 
 registerLocaleData(localeFr, 'fr');
 
@@ -47,7 +48,8 @@ registerLocaleData(localeFr, 'fr');
     TipTableComponent,
     TipByUserComponent,
     TipByDateComponent,
-    TipByWeekdayComponent
+    TipByWeekdayComponent,
+    TipBySizeComponent
   ],
   imports: [
     BrowserModule,

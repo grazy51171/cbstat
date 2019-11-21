@@ -66,8 +66,6 @@ export class StatTokenService {
   }
 
   public async sumByDay(positive: boolean, dateMin: Date, dateMax: Date) {
-    console.log('Datemin,max', dateMin, dateMax, JSON.stringify(dateMax));
-
     const stat = new Map<string, Map<string, number>>();
     const dataSelect = this.cbStatisticDb.tipList
       .where('date')
@@ -190,5 +188,32 @@ export class StatTokenService {
       map((fileLines) => new Blob([fileLines], { type: 'text/plain;charset=utf-8' })),
       map((blob) => FileSaver.saveAs(blob, 'transactions-export.csv'))
     );
+  }
+
+  public async tipBySize(positive: boolean, dateMin: Date, dateMax: Date, sizeLimit: number[]) {
+    const dataSelect = this.cbStatisticDb.tipList
+      .where('date')
+      .inAnyRange([
+        [
+          isValidDate(dateMin) ? dateMin : StatTokenService.allMinDate,
+          isValidDate(dateMax) ? dateMax : StatTokenService.allMaxDate
+        ]
+      ]);
+
+    const stat = new Map<number, { number: number; sum: number }>();
+    const limits = sizeLimit.sort((a, b) => a - b);
+    limits.forEach((v) => stat.set(v, { number: 0, sum: 0 }));
+
+    const list = dataSelect.filter((t) => (positive ? t.tokenChange > 0 : t.tokenChange < 0));
+    await list.each((transac) => {
+      const tip = (positive ? 1 : -1) * transac.tokenChange;
+      const bucket = limits.find((v) => v >= tip);
+      if (bucket) {
+        const bucketStat = stat.get(bucket);
+        bucketStat.number++;
+        bucketStat.sum += tip;
+      }
+    });
+    return stat;
   }
 }
