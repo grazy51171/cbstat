@@ -5,6 +5,7 @@ import { TipByUserComponent } from './tip-by-user/tip-by-user.component';
 import { TipByDateComponent } from './tip-by-date/tip-by-date.component';
 import { TipByWeekdayComponent } from './tip-by-weekday/tip-by-weekday.component';
 import { TipBySizeComponent } from './tip-by-size/tip-by-size.component';
+import { LiveStatsComponent } from './live-stats/live-stats.component';
 
 const routes: Routes = [
   { path: 'import', component: ImportDataComponent },
@@ -12,6 +13,7 @@ const routes: Routes = [
   { path: 'bydate', component: TipByDateComponent },
   { path: 'byweekday', component: TipByWeekdayComponent },
   { path: 'bytipsize', component: TipBySizeComponent },
+  { path: 'livestatmain', component: LiveStatsComponent },
   { path: '**', redirectTo: 'import' }
 ];
 

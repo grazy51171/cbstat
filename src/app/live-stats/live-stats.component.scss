@@ -1,0 +1,8 @@
+.config-contener {
+  display: flex;
+  flex-direction: column;
+}
+
+.config-contener > * {
+  width: 100%;
+}

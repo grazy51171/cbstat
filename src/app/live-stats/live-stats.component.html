@@ -1,0 +1,48 @@
+<mat-card>
+  <mat-card-content>
+    <p>
+      L'url a ajouter si dessous est disponible là :
+      <a href="https://fr.chaturbate.com/statsapi/authtoken/" target="_blank" rel="noopener"
+        >https://fr.chaturbate.com/statsapi/authtoken/</a
+      >, (il faudra peut etre Générer un jeton en donnant un nom et cliquant sur le bouton associé )
+    </p>
+    <p>
+      Les statistiques ne se mettent à jour que quand la page web de statistique live de grazy-cbstats est ouverte.
+    </p>
+    <form class="config-contener" [formGroup]="configurations">
+      <mat-form-field>
+        <input matInput placeholder="Url de statistique :" formControlName="statUrl" />
+      </mat-form-field>
+    </form>
+  </mat-card-content>
+</mat-card>
+<mat-card *ngIf="currentStatValue | async as stat">
+  <mat-card-title>Statistics</mat-card-title>
+  <mat-card-content>
+    <mat-list>
+      <mat-list-item>
+        <label>Date mise à jour : </label> <span>{{ stat.date | date: 'medium' }}</span>
+      </mat-list-item>
+
+      <mat-list-item>
+        <label>Nombre de viewer : </label> <span>{{ stat.numRegisteredViewers }}</span>
+      </mat-list-item>
+
+      <mat-list-item>
+        <label>Nombre de viewer avec token : </label> <span>{{ stat.numTokenedViewers }}</span>
+      </mat-list-item>
+
+      <mat-list-item>
+        <label>Nombre de follower : </label> <span>{{ stat.numFollowers }}</span>
+      </mat-list-item>
+
+      <mat-list-item>
+        <label>Nombre de tokens : </label> <span>{{ stat.tokenBalance }}</span>
+      </mat-list-item>
+
+      <mat-list-item>
+        <label>Tip dans la derniere heure : </label> <span>{{ stat.tipsInLastHour }}</span>
+      </mat-list-item>
+    </mat-list>
+  </mat-card-content></mat-card
+>

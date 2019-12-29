@@ -37,6 +37,8 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { TipByDateComponent } from './tip-by-date/tip-by-date.component';
 import { TipByWeekdayComponent } from './tip-by-weekday/tip-by-weekday.component';
 import { TipBySizeComponent } from './tip-by-size/tip-by-size.component';
+import { LiveStatsComponent } from './live-stats/live-stats.component';
+import { HttpClientModule } from '@angular/common/http';
 
 registerLocaleData(localeFr, 'fr');
 
@@ -49,7 +51,8 @@ registerLocaleData(localeFr, 'fr');
     TipByUserComponent,
     TipByDateComponent,
     TipByWeekdayComponent,
-    TipBySizeComponent
+    TipBySizeComponent,
+    LiveStatsComponent
   ],
   imports: [
     BrowserModule,
@@ -74,6 +77,7 @@ registerLocaleData(localeFr, 'fr');
     MatNativeDateModule,
     MatInputModule,
     MatExpansionModule,
+    HttpClientModule,
     ChartsModule,
     MaterialFileInputModule
   ],
