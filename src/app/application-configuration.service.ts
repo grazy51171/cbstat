@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
+import { Subject, BehaviorSubject } from 'rxjs';
 
 import { CbStatisticDatabase } from './database/cb-statistic.database';
 import { IAppConfiguration } from './database/app-configuration';
@@ -8,18 +8,19 @@ import { IAppConfiguration } from './database/app-configuration';
   providedIn: 'root'
 })
 export class ApplicationConfigurationService {
-  private current = new Subject<IAppConfiguration>();
+  private defaultConfig: IAppConfiguration = {
+    id: 0,
+    urlStatistic: null
+  };
+
+  private current = new BehaviorSubject<IAppConfiguration>(this.defaultConfig);
 
   constructor(private cbStatisticDb: CbStatisticDatabase) {
     this.cbStatisticDb.appConfiguration.get(0).then(async (val) => {
       if (!val) {
         // define default value
-        const config: IAppConfiguration = {
-          id: 0,
-          urlStatistic: null
-        };
-        await this.cbStatisticDb.appConfiguration.add(config);
-        this.current.next(config);
+        await this.cbStatisticDb.appConfiguration.add(this.defaultConfig);
+        this.current.next(this.defaultConfig);
       } else {
         this.current.next(val);
       }

@@ -1,0 +1,54 @@
+<mat-expansion-panel>
+  <mat-expansion-panel-header>
+    <mat-panel-title>Options</mat-panel-title>
+    <mat-panel-description>Permet de configurer le graphique</mat-panel-description>
+  </mat-expansion-panel-header>
+  <form class="config-contener" [formGroup]="graphOptions">
+    <section>
+      <label>Type de vue : </label>
+      <mat-radio-group formControlName="typeView">
+        <mat-radio-button value="24h">Dernière 24h</mat-radio-button>
+        <mat-radio-button value="interval">Intervale de temps</mat-radio-button>
+      </mat-radio-group>
+    </section>
+    <ng-container>
+      <section *ngIf="dateLimits | async as limits">
+        <label>Intervale :</label>
+        <mat-form-field>
+          <input
+            matInput
+            [min]="limits.first"
+            [max]="limits.last"
+            [matDatepicker]="pickerMin"
+            placeholder="Debut intervale"
+            formControlName="dateMin"
+          />
+          <mat-datepicker-toggle matSuffix [for]="pickerMin"></mat-datepicker-toggle>
+          <mat-datepicker #pickerMin></mat-datepicker>
+        </mat-form-field>
+        <mat-form-field>
+          <input
+            matInput
+            [min]="limits.first"
+            [max]="limits.last"
+            [matDatepicker]="pickerMax"
+            placeholder="Fin intervale"
+            formControlName="dateMax"
+          />
+          <mat-datepicker-toggle matSuffix [for]="pickerMax"></mat-datepicker-toggle>
+          <mat-datepicker #pickerMax></mat-datepicker>
+        </mat-form-field>
+      </section>
+    </ng-container>
+  </form>
+</mat-expansion-panel>
+<mat-divider></mat-divider>
+<div>
+  <canvas
+    baseChart
+    [datasets]="chartDataSets"
+    [chartType]="chartType"
+    [options]="chartOptions"
+    [legend]="chartLegend"
+  ></canvas>
+</div>

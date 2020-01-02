@@ -3,7 +3,7 @@ import { CbStatisticDatabase } from './database/cb-statistic.database';
 import { IShowStatistic } from './database/show-statistic';
 import { DateTime } from 'luxon';
 import { HttpClient } from '@angular/common/http';
-import { interval, of, Subject } from 'rxjs';
+import { interval, of, Subject, from, zip } from 'rxjs';
 import { startWith, switchMap, catchError, filter, map, distinctUntilChanged, delay, tap } from 'rxjs/operators';
 import { ApplicationConfigurationService } from './application-configuration.service';
 
@@ -22,10 +22,17 @@ interface ICBShowStatistic {
   num_viewers: number;
 }
 
+function isValidDate(d: Date) {
+  return d instanceof Date && !isNaN(d.getTime());
+}
+
 @Injectable({
   providedIn: 'root'
 })
 export class ShowStatisticsService {
+  private static allMinDate = new Date(2000, 0);
+  private static allMaxDate = new Date(3000, 0);
+
   private readonly cbTimeZone = 'America/Denver';
 
   private lastValue = new Subject<IShowStatistic>();
@@ -59,6 +66,39 @@ export class ShowStatisticsService {
       distinctUntilChanged(this.areSame),
       tap((v) => this.cbStatisticDb.showStatistic.put(v))
     );
+  }
+
+  public limits() {
+    const first = from(this.cbStatisticDb.showStatistic.limit(1).first());
+    const last = from(
+      this.cbStatisticDb.showStatistic
+        .reverse()
+        .limit(1)
+        .first()
+    );
+
+    return zip(first, last).pipe(
+      map(([firstValue, lastValue]) => {
+        if (first && last) {
+          return { first: firstValue.date, last: lastValue.date };
+        } else {
+          return null;
+        }
+      })
+    );
+  }
+
+  interval(dateMin: Date, dateMax: Date) {
+    const dataSelect = this.cbStatisticDb.showStatistic
+      .where('date')
+      .inAnyRange([
+        [
+          isValidDate(dateMin) ? dateMin : ShowStatisticsService.allMinDate,
+          isValidDate(dateMax) ? dateMax : ShowStatisticsService.allMaxDate
+        ]
+      ]);
+
+    return from(dataSelect.toArray());
   }
 
   private convert(fromAPI: ICBShowStatistic): IShowStatistic {

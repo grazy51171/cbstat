@@ -4,7 +4,7 @@ import { ShowStatisticsService } from '../show-statistics.service';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { IShowStatistic } from '../database/show-statistic';
-import { first } from 'rxjs/operators';
+import { first, distinctUntilChanged } from 'rxjs/operators';
 
 @Component({
   selector: 'app-live-stats',
@@ -29,7 +29,14 @@ export class LiveStatsComponent implements OnInit {
     this.currentStatValue = showStatisticsService.currentValue;
     this.appConfigService
       .get()
-      .pipe(first())
+      .pipe(
+        distinctUntilChanged((a, b) => {
+          if (!a || !b) {
+            return false;
+          }
+          return a.urlStatistic === b.urlStatistic;
+        })
+      )
       .subscribe((v) => {
         this.configurations.setValue({
           statUrl: v.urlStatistic

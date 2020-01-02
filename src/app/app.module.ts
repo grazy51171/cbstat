@@ -39,6 +39,8 @@ import { TipByWeekdayComponent } from './tip-by-weekday/tip-by-weekday.component
 import { TipBySizeComponent } from './tip-by-size/tip-by-size.component';
 import { LiveStatsComponent } from './live-stats/live-stats.component';
 import { HttpClientModule } from '@angular/common/http';
+import { LiveNbViewerComponent } from './live-nb-viewer/live-nb-viewer.component';
+import { LiveNbFollowersComponent } from './live-nb-followers/live-nb-followers.component';
 
 registerLocaleData(localeFr, 'fr');
 
@@ -52,7 +54,9 @@ registerLocaleData(localeFr, 'fr');
     TipByDateComponent,
     TipByWeekdayComponent,
     TipBySizeComponent,
-    LiveStatsComponent
+    LiveStatsComponent,
+    LiveNbViewerComponent,
+    LiveNbFollowersComponent
   ],
   imports: [
     BrowserModule,
