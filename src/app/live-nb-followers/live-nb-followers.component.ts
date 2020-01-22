@@ -3,7 +3,7 @@ import { ChartOptions, ChartType, ChartDataSets, ChartPoint } from 'chart.js';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { Observable, Subject } from 'rxjs';
 import { ShowStatisticsService } from '../show-statistics.service';
-import { map, flatMap, takeUntil, filter } from 'rxjs/operators';
+import { map, flatMap, takeUntil, filter, skip } from 'rxjs/operators';
 import { DateTime } from 'luxon';
 
 @Component({
@@ -78,6 +78,7 @@ export class LiveNbFollowersComponent implements OnInit, OnDestroy {
     this.showStatistics.currentValue
       .pipe(
         takeUntil(this.unsubscribe),
+        skip(1),
         filter((v) => !!v),
         map((stat) => ({
           followers: { t: stat.date, y: stat.numFollowers }
