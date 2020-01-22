@@ -119,6 +119,7 @@ export class LiveNbViewerComponent implements OnInit, OnDestroy {
     this.showStatistics.currentValue
       .pipe(
         takeUntil(this.unsubscribe),
+        filter((v) => !!v),
         map((stat) => ({
           viewer: { t: stat.date, y: stat.numViewers },
           viewerRegistred: { t: stat.date, y: stat.numRegisteredViewers },

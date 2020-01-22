@@ -78,6 +78,7 @@ export class LiveNbFollowersComponent implements OnInit, OnDestroy {
     this.showStatistics.currentValue
       .pipe(
         takeUntil(this.unsubscribe),
+        filter((v) => !!v),
         map((stat) => ({
           followers: { t: stat.date, y: stat.numFollowers }
         }))

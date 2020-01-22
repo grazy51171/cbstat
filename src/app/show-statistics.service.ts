@@ -3,7 +3,7 @@ import { CbStatisticDatabase } from './database/cb-statistic.database';
 import { IShowStatistic } from './database/show-statistic';
 import { DateTime } from 'luxon';
 import { HttpClient } from '@angular/common/http';
-import { interval, of, Subject, from, zip } from 'rxjs';
+import { interval, of, Subject, from, zip, BehaviorSubject } from 'rxjs';
 import { startWith, switchMap, catchError, filter, map, distinctUntilChanged, delay, tap } from 'rxjs/operators';
 import { ApplicationConfigurationService } from './application-configuration.service';
 
@@ -35,7 +35,7 @@ export class ShowStatisticsService {
 
   private readonly cbTimeZone = 'America/Denver';
 
-  private lastValue = new Subject<IShowStatistic>();
+  private lastValue = new BehaviorSubject<IShowStatistic>(null);
 
   constructor(
     applicationConfigurationService: ApplicationConfigurationService,
@@ -45,6 +45,7 @@ export class ShowStatisticsService {
     applicationConfigurationService
       .get()
       .pipe(
+        filter((v) => !!v.urlStatistic),
         map((v) => 'https://cors-anywhere.herokuapp.com/' + v.urlStatistic),
         switchMap((url) => this.readStatistics(url))
       )
