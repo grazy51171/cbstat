@@ -41,6 +41,7 @@ import { LiveStatsComponent } from './live-stats/live-stats.component';
 import { HttpClientModule } from '@angular/common/http';
 import { LiveNbViewerComponent } from './live-nb-viewer/live-nb-viewer.component';
 import { LiveNbFollowersComponent } from './live-nb-followers/live-nb-followers.component';
+import { AboutComponent } from './about/about.component';
 
 registerLocaleData(localeFr, 'fr');
 
@@ -56,7 +57,8 @@ registerLocaleData(localeFr, 'fr');
     TipBySizeComponent,
     LiveStatsComponent,
     LiveNbViewerComponent,
-    LiveNbFollowersComponent
+    LiveNbFollowersComponent,
+    AboutComponent
   ],
   imports: [
     BrowserModule,

@@ -8,6 +8,7 @@ import { TipBySizeComponent } from './tip-by-size/tip-by-size.component';
 import { LiveStatsComponent } from './live-stats/live-stats.component';
 import { LiveNbViewerComponent } from './live-nb-viewer/live-nb-viewer.component';
 import { LiveNbFollowersComponent } from './live-nb-followers/live-nb-followers.component';
+import { AboutComponent } from './about/about.component';
 
 const routes: Routes = [
   { path: 'import', component: ImportDataComponent },
@@ -18,6 +19,7 @@ const routes: Routes = [
   { path: 'livestatmain', component: LiveStatsComponent },
   { path: 'livenbviewer', component: LiveNbViewerComponent },
   { path: 'livenbfollowers', component: LiveNbFollowersComponent },
+  { path: 'about', component: AboutComponent },
 
   { path: '**', redirectTo: 'import' }
 ];
