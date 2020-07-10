@@ -21,18 +21,15 @@ import { MatSortModule } from '@angular/material/sort';
 import { TipByUserComponent } from './tip-by-user/tip-by-user.component';
 import { ChartsModule } from 'ng2-charts';
 import { MaterialFileInputModule } from 'ngx-material-file-input';
-import {
-  MatFormFieldModule,
-  MatCheckbox,
-  MatCheckboxModule,
-  MatRadioModule,
-  MatCardModule,
-  MatProgressSpinnerModule,
-  MatDatepickerModule,
-  MatNativeDateModule,
-  MatExpansionModule,
-  MatInputModule
-} from '@angular/material';
+import { MatCardModule } from '@angular/material/card';
+import { MatCheckbox, MatCheckboxModule } from '@angular/material/checkbox';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatRadioModule } from '@angular/material/radio';
 import { ReactiveFormsModule } from '@angular/forms';
 import { TipByDateComponent } from './tip-by-date/tip-by-date.component';
 import { TipByWeekdayComponent } from './tip-by-weekday/tip-by-weekday.component';

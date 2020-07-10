@@ -1,11 +1,9 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import {
-  MatCardModule,
-  MatDividerModule,
-  MatIconModule,
-  MatFormFieldModule,
-  MatProgressSpinnerModule
-} from '@angular/material';
+import { MatCardModule } from '@angular/material/card';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 import { ImportDataComponent } from './import-data.component';
 import { MaterialFileInputModule } from 'ngx-material-file-input';
