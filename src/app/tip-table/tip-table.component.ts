@@ -17,9 +17,9 @@ export class TipTableComponent implements AfterViewInit, OnInit {
   @Input()
   public update: Observable<void>;
 
-  @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
-  @ViewChild(MatSort, { static: false }) sort: MatSort;
-  @ViewChild(MatTable, { static: false }) table: MatTable<ITransaction>;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatTable) table: MatTable<ITransaction>;
   dataSource: TipTableDataSource;
 
   /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
