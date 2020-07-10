@@ -31,7 +31,7 @@
     "luxon": "^1.21.3",
     "ng-mocks": "^8.1.0",
     "ng2-charts": "^2.3.2",
-    "ngx-material-file-input": "^2.0.0",
+    "ngx-material-file-input": "^2.1.1",
     "rxjs": "~6.6.0",
     "tslib": "^1.10.0",
     "zone.js": "~0.10.2"
