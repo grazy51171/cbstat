@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { LiveNbFollowersComponent } from './live-nb-followers.component';
 
@@ -6,7 +6,7 @@ describe('LiveNbFollowersComponent', () => {
   let component: LiveNbFollowersComponent;
   let fixture: ComponentFixture<LiveNbFollowersComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ LiveNbFollowersComponent ]
     })

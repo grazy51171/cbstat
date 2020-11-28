@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { TipBySizeComponent } from './tip-by-size.component';
 import { MatCardModule } from '@angular/material/card';
@@ -13,7 +13,7 @@ describe('TipByDateComponent', () => {
   let component: TipBySizeComponent;
   let fixture: ComponentFixture<TipBySizeComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [TipBySizeComponent],
       imports: [
