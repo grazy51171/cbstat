@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { DateTime } from 'luxon';
 import { from, Observable } from 'rxjs';
-import { map, filter, bufferCount, flatMap, toArray } from 'rxjs/operators';
+import { map, filter, bufferCount, toArray, mergeMap } from 'rxjs/operators';
 import * as FileSaver from 'file-saver';
 import Dexie from 'dexie';
 
@@ -12,7 +12,7 @@ function isValidDate(d: Date) {
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class StatTokenService {
   private static fileDataRegexp = /"(\d\d\d\d-\d\d-\d\d \d\d:\d\d:\d\d.\d\d\d)\d\d\d",(-?\d*),(-?\d*),"(.*)","(.*)","(.*)"/u;
@@ -72,15 +72,13 @@ export class StatTokenService {
       .inAnyRange([
         [
           isValidDate(dateMin) ? dateMin : StatTokenService.allMinDate,
-          isValidDate(dateMax) ? dateMax : StatTokenService.allMaxDate
-        ]
+          isValidDate(dateMax) ? dateMax : StatTokenService.allMaxDate,
+        ],
       ]);
 
     const list = dataSelect.filter((t) => (positive ? t.tokenChange > 0 : t.tokenChange < 0));
     await list.each((transac) => {
-      const date = DateTime.fromJSDate(transac.date)
-        .startOf('day')
-        .toISODate();
+      const date = DateTime.fromJSDate(transac.date).startOf('day').toISODate();
 
       let userStat: Map<string, number>;
       if (stat.has(date)) {
@@ -128,10 +126,7 @@ export class StatTokenService {
 
   public async limits() {
     const first = await this.cbStatisticDb.tipList.limit(1).first();
-    const last = await this.cbStatisticDb.tipList
-      .reverse()
-      .limit(1)
-      .first();
+    const last = await this.cbStatisticDb.tipList.reverse().limit(1).first();
     if (first && last) {
       return { first: first.date, last: last.date };
     }
@@ -159,10 +154,10 @@ export class StatTokenService {
         tokenBalance: parseInt(matches[3], 10),
         type: matches[4],
         user: matches[5],
-        note: matches[6]
+        note: matches[6],
       })),
       bufferCount(500),
-      flatMap((val) => from(this.cbStatisticDb.tipList.bulkPut(val)))
+      mergeMap((val) => from(this.cbStatisticDb.tipList.bulkPut(val)))
     );
   }
 
@@ -196,8 +191,8 @@ export class StatTokenService {
       .inAnyRange([
         [
           isValidDate(dateMin) ? dateMin : StatTokenService.allMinDate,
-          isValidDate(dateMax) ? dateMax : StatTokenService.allMaxDate
-        ]
+          isValidDate(dateMax) ? dateMax : StatTokenService.allMaxDate,
+        ],
       ]);
 
     const stat = new Map<number, { number: number; sum: number }>();

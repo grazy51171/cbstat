@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { StatTokenService } from '../stat-token.service';
 import { Subject, Observable, from, of } from 'rxjs';
-import { flatMap, delay } from 'rxjs/operators';
+import { delay, mergeMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-import-data',
   templateUrl: './import-data.component.html',
-  styleUrls: ['./import-data.component.scss']
+  styleUrls: ['./import-data.component.scss'],
 })
 export class ImportDataComponent implements OnInit {
   public importProgress = false;
@@ -17,8 +17,8 @@ export class ImportDataComponent implements OnInit {
   public dataUpdated = new Subject<void>();
 
   constructor(private statToken: StatTokenService) {
-    this.linecount = this.dataUpdated.pipe(flatMap(() => from(statToken.count())));
-    this.limits = this.dataUpdated.pipe(flatMap(() => from(statToken.limits())));
+    this.linecount = this.dataUpdated.pipe(mergeMap(() => from(statToken.count())));
+    this.limits = this.dataUpdated.pipe(mergeMap(() => from(statToken.limits())));
   }
 
   ngOnInit() {
