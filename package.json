@@ -23,7 +23,7 @@
     "@angular/router": "~11.0.2",
     "chart.js": "^2.9.4",
     "chartjs-plugin-colorschemes": "^0.4.0",
-    "dexie": "^2.0.4",
+    "dexie": "^3.2.2",
     "file-saver": "^2.0.5",
     "luxon": "^1.25.0",
     "ng-mocks": "^11.1.3",
