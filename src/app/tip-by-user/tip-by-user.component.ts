@@ -3,7 +3,7 @@ import { ChartOptions, ChartType } from 'chart.js';
 import { Label } from 'ng2-charts';
 import { StatTokenService } from '../stat-token.service';
 import 'chartjs-plugin-colorschemes';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { merge } from 'rxjs';
 
 @Component({
@@ -29,13 +29,13 @@ export class TipByUserComponent implements OnInit {
   public chartType: ChartType = 'pie';
   public chartLegend = true;
 
-  public graphOptions: FormGroup;
+  public graphOptions: UntypedFormGroup;
 
   private readonly defaultOptions = {
     typeUser: 'tipper',
     chartType: 'pie' as ChartType
   };
-  constructor(private statToken: StatTokenService, private formBuilder: FormBuilder) {
+  constructor(private statToken: StatTokenService, private formBuilder: UntypedFormBuilder) {
     this.graphOptions = formBuilder.group(this.defaultOptions);
   }
 

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ChartOptions, ChartType, ChartDataSets } from 'chart.js';
 import { Label } from 'ng2-charts';
-import { FormGroup, FormBuilder } from '@angular/forms';
+import { UntypedFormGroup, UntypedFormBuilder } from '@angular/forms';
 import { DateTime } from 'luxon';
 import { from, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -49,7 +49,7 @@ export class TipByDateComponent implements OnInit {
   public chartType: ChartType = 'bar';
   public chartLegend = true;
 
-  public graphOptions: FormGroup;
+  public graphOptions: UntypedFormGroup;
 
   public dateLimits: Observable<{ first: Date; last: Date }>;
 
@@ -59,7 +59,7 @@ export class TipByDateComponent implements OnInit {
     dateMin: null as Date,
     dateMax: null as Date
   };
-  constructor(private statToken: StatTokenService, private formBuilder: FormBuilder) {
+  constructor(private statToken: StatTokenService, private formBuilder: UntypedFormBuilder) {
     this.graphOptions = formBuilder.group(this.defaultOptions);
   }
 

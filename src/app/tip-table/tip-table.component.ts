@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, OnInit, ViewChild, Input } from '@angular/core';
-import { MatPaginator } from '@angular/material/paginator';
+import { MatLegacyPaginator as MatPaginator } from '@angular/material/legacy-paginator';
 import { MatSort } from '@angular/material/sort';
-import { MatTable } from '@angular/material/table';
+import { MatLegacyTable as MatTable } from '@angular/material/legacy-table';
 import { TipTableDataSource } from './tip-table-datasource';
 import { StatTokenService } from '../stat-token.service';
 import { ITransaction } from '../database/cb-statistic.database';

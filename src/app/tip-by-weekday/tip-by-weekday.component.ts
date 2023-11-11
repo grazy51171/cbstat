@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ChartOptions, ChartType, ChartDataSets } from 'chart.js';
 import { Label } from 'ng2-charts';
-import { FormGroup, FormBuilder } from '@angular/forms';
+import { UntypedFormGroup, UntypedFormBuilder } from '@angular/forms';
 import { StatTokenService } from '../stat-token.service';
 import { DateTime } from 'luxon';
 
@@ -46,13 +46,13 @@ export class TipByWeekdayComponent implements OnInit {
   public chartType: ChartType = 'bar';
   public chartLegend = true;
 
-  public graphOptions: FormGroup;
+  public graphOptions: UntypedFormGroup;
 
   private readonly defaultOptions = {
     typeUser: 'tipper',
     chartType: 'bar' as ChartType
   };
-  constructor(private statToken: StatTokenService, formBuilder: FormBuilder) {
+  constructor(private statToken: StatTokenService, formBuilder: UntypedFormBuilder) {
     this.graphOptions = formBuilder.group(this.defaultOptions);
   }
 

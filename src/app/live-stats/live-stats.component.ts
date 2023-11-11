@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ApplicationConfigurationService } from '../application-configuration.service';
 import { ShowStatisticsService } from '../show-statistics.service';
-import { FormGroup, FormBuilder } from '@angular/forms';
+import { UntypedFormGroup, UntypedFormBuilder } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { IShowStatistic } from '../database/show-statistic';
 import { first, distinctUntilChanged } from 'rxjs/operators';
@@ -12,7 +12,7 @@ import { first, distinctUntilChanged } from 'rxjs/operators';
   styleUrls: ['./live-stats.component.scss']
 })
 export class LiveStatsComponent implements OnInit {
-  public configurations: FormGroup;
+  public configurations: UntypedFormGroup;
 
   public currentStatValue = new Observable<IShowStatistic>();
 
@@ -21,7 +21,7 @@ export class LiveStatsComponent implements OnInit {
   };
 
   constructor(
-    formBuilder: FormBuilder,
+    formBuilder: UntypedFormBuilder,
     private appConfigService: ApplicationConfigurationService,
     showStatisticsService: ShowStatisticsService
   ) {

@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ChartOptions, ChartType, ChartDataSets, ChartPoint } from 'chart.js';
-import { FormGroup, FormBuilder } from '@angular/forms';
+import { UntypedFormGroup, UntypedFormBuilder } from '@angular/forms';
 import { Observable, Subject } from 'rxjs';
 import { ShowStatisticsService } from '../show-statistics.service';
 import { map, flatMap, takeUntil, filter, skip } from 'rxjs/operators';
@@ -85,7 +85,7 @@ export class LiveNbViewerComponent implements OnInit, OnDestroy {
   public chartType: ChartType = 'line';
   public chartLegend = true;
 
-  public graphOptions: FormGroup;
+  public graphOptions: UntypedFormGroup;
 
   public dateLimits: Observable<{ first: Date; last: Date }>;
 
@@ -97,7 +97,7 @@ export class LiveNbViewerComponent implements OnInit, OnDestroy {
 
   private unsubscribe = new Subject<void>();
 
-  constructor(private showStatistics: ShowStatisticsService, formBuilder: FormBuilder) {
+  constructor(private showStatistics: ShowStatisticsService, formBuilder: UntypedFormBuilder) {
     this.graphOptions = formBuilder.group(this.defaultOptions);
   }
 
