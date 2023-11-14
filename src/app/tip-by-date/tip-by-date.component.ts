@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ChartOptions, ChartType, ChartDataSets } from 'chart.js';
-import { Label } from 'ng2-charts';
+import { ChartOptions, ChartType, ChartDataset } from 'chart.js';
 import { UntypedFormGroup, UntypedFormBuilder } from '@angular/forms';
 import { DateTime } from 'luxon';
 import { from, Observable } from 'rxjs';
@@ -16,30 +15,24 @@ import { StatTokenService } from '../stat-token.service';
 export class TipByDateComponent implements OnInit {
   public chartOptions: ChartOptions = {
     responsive: true,
-    legend: {
-      position: 'right'
-    },
     scales: {
-      xAxes: [
+      x:
         {
           stacked: true
-        }
-      ],
-      yAxes: [
-        {
-          stacked: true
-        }
-      ]
+        },
     },
     plugins: {
-      colorschemes: {
+      legend: {
+        position: 'right'
+      },
+    /*  colorschemes: {
         scheme: 'brewer.Paired12',
         override: true
-      }
+      }*/
     }
   };
-  public chartLabels: Label[] = [];
-  public chartDataSets: ChartDataSets[] = [
+  public chartLabels = [];
+  public chartDataSets: ChartDataset[] = [
     {
       label: '',
       stack: '',

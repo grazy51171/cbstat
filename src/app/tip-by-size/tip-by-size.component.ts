@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ChartOptions, ChartType, ChartDataSets } from 'chart.js';
-import { Label } from 'ng2-charts';
+import { ChartOptions, ChartType, ChartDataset } from 'chart.js';
 import { UntypedFormGroup, UntypedFormBuilder } from '@angular/forms';
 import { DateTime } from 'luxon';
 import { from, Observable } from 'rxjs';
@@ -11,49 +10,52 @@ import { StatTokenService } from '../stat-token.service';
 @Component({
   selector: 'app-tip-by-size',
   templateUrl: './tip-by-size.component.html',
-  styleUrls: ['./tip-by-size.component.scss']
+  styleUrls: ['./tip-by-size.component.scss'],
 })
 export class TipBySizeComponent implements OnInit {
   public maxSum = 1000;
   public chartOptions: ChartOptions = {
     responsive: true,
-    legend: {
-      position: 'right'
-    },
     scales: {
-      xAxes: [
-        {
-          offset: true,
-          ticks: {
-            // Include a dollar sign in the ticks
-            callback: (value, index, values) => {
-              return this.chartLabels[index] as string;
-            }
-          }
-        }
-      ]
+      x: {
+        offset: true,
+        ticks: {
+          callback: (value, index, values) => {
+            return this.chartLabels[index] as string;
+          },
+        },
+      },
     },
-    tooltips: {
-      callbacks: {
-        label: (tooltipItem, data) => {
-          return data.datasets[tooltipItem.datasetIndex].label + ' Nb ' + tooltipItem.yLabel || '';
-        }
-      }
-    },
+
     plugins: {
-      colorschemes: {
+      tooltip: {
+        callbacks: {
+          label: (context) => {
+            const label = context.dataset.label || '';
+            if (label) {
+              return label + ' Nb ' + context.parsed.y || '';
+            } else {
+              return '';
+            }
+          },
+        },
+      },
+      legend: {
+        position: 'right',
+      },
+      /*  colorschemes: {
         scheme: 'brewer.Paired12',
         override: true
-      }
-    }
+      }*/
+    },
   };
-  public chartLabels: Label[] = [];
-  public chartDataSets: ChartDataSets[] = [
+  public chartLabels = [];
+  public chartDataSets: ChartDataset[] = [
     {
       label: '',
       stack: '',
-      data: []
-    }
+      data: [],
+    },
   ];
   public chartType: ChartType = 'bubble';
   public chartLegend = true;
@@ -66,7 +68,7 @@ export class TipBySizeComponent implements OnInit {
     typeUser: 'tipper',
     chartType: 'bubble' as ChartType,
     dateMin: null as Date,
-    dateMax: null as Date
+    dateMax: null as Date,
   };
   constructor(private statToken: StatTokenService, formBuilder: UntypedFormBuilder) {
     this.graphOptions = formBuilder.group(this.defaultOptions);
@@ -79,9 +81,7 @@ export class TipBySizeComponent implements OnInit {
       .pipe(
         map((v) =>
           Object.assign({}, v, {
-            dateMax: DateTime.fromJSDate(v.dateMax)
-              .plus({ day: 1 })
-              .toJSDate()
+            dateMax: DateTime.fromJSDate(v.dateMax).plus({ day: 1 }).toJSDate(),
           })
         )
       )
@@ -112,9 +112,9 @@ export class TipBySizeComponent implements OnInit {
             {
               x: index,
               y: s.number,
-              r: 2 + (60 * s.sum) / maxSum
-            }
-          ]
+              r: 2 + (60 * s.sum) / maxSum,
+            },
+          ],
         };
       });
     });

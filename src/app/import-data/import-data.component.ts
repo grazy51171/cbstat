@@ -27,7 +27,8 @@ export class ImportDataComponent implements OnInit {
       .subscribe(() => this.dataUpdated.next());
   }
 
-  public onChange(fileList: FileList): void {
+  public onChange(target: EventTarget): void {
+    const fileList: FileList = (target as HTMLInputElement).files;
     this.importProgress = true;
     this.importFinish = false;
     const file = fileList[0];

@@ -1,85 +1,82 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ChartOptions, ChartType, ChartDataSets, ChartPoint } from 'chart.js';
+import { ChartOptions, ChartType, ChartDataset, ScatterDataPoint } from 'chart.js';
 import { UntypedFormGroup, UntypedFormBuilder } from '@angular/forms';
 import { Observable, Subject } from 'rxjs';
 import { ShowStatisticsService } from '../show-statistics.service';
 import { map, flatMap, takeUntil, filter, skip } from 'rxjs/operators';
 import { DateTime } from 'luxon';
 
+type DateTimePoint = { t: Date; y: number };
+type DateTimePointArray = Array<DateTimePoint>;
+
 @Component({
   selector: 'app-live-nb-viewer',
   templateUrl: './live-nb-viewer.component.html',
-  styleUrls: ['./live-nb-viewer.component.scss']
+  styleUrls: ['./live-nb-viewer.component.scss'],
 })
 export class LiveNbViewerComponent implements OnInit, OnDestroy {
   public chartOptions: ChartOptions = {
     responsive: true,
-    legend: {
-      position: 'right'
-    },
     scales: {
-      xAxes: [
-        {
-          type: 'time'
-        }
-      ],
-      yAxes: [
-        {
-          type: 'linear',
-          display: true,
-          position: 'left',
-          id: 'viewer'
-        },
-        {
-          type: 'linear',
-          display: true,
-          position: 'right',
-          id: 'tip',
-          gridLines: {
+      x: {
+        type: 'time',
+      },
+      viewer: {
+        type: 'linear',
+        display: true,
+        position: 'left',
+      },
+      tip: {
+        type: 'linear',
+        display: true,
+        position: 'right',
+        /*    gridLines: {
             drawOnChartArea: false // only want the grid lines for one axis to show up
-          }
-        }
-      ]
+          }*/
+      },
     },
     plugins: {
-      colorschemes: {
+      legend: {
+        position: 'right',
+      },
+      /* colorschemes: {
         scheme: 'brewer.Paired12',
         override: true
-      }
-    }
+      }*/
+    },
   };
 
-  public viewerData = new Array<ChartPoint>();
-  public viewerRegistredData = new Array<ChartPoint>();
-  public viewerWithTokenData = new Array<ChartPoint>();
-  public tipLastHoursData = new Array<ChartPoint>();
-  public viewerDataSet: ChartDataSets = {
+  public viewerData = new Array<DateTimePoint>();
+  public viewerRegistredData = new Array<DateTimePoint>();
+  public viewerWithTokenData = new Array<DateTimePoint>();
+  public tipLastHoursData = new Array<DateTimePoint>();
+  public viewerDataSet: ChartDataset<'line', DateTimePointArray> = {
     label: 'Viewer',
     data: this.viewerData,
-    yAxisID: 'viewer'
+    yAxisID: 'viewer',
   };
-  public viewerRegistredDataSet: ChartDataSets = {
+  public viewerRegistredDataSet: ChartDataset<'line', DateTimePointArray> = {
     label: 'Viewer enregistré',
     data: this.viewerRegistredData,
-    yAxisID: 'viewer'
+    yAxisID: 'viewer',
   };
 
-  public viewerWithTokenDataSet: ChartDataSets = {
+  public viewerWithTokenDataSet: ChartDataset<'line', DateTimePointArray> = {
     label: 'Viewer avec token',
     data: this.viewerWithTokenData,
-    yAxisID: 'viewer'
+    yAxisID: 'viewer',
   };
 
-  public tipLastHoursDataSet: ChartDataSets = {
+  public tipLastHoursDataSet: ChartDataset<'line', DateTimePointArray> = {
     label: 'Tips last hours',
     data: this.tipLastHoursData,
-    yAxisID: 'tip'
+    yAxisID: 'tip',
   };
-  public chartDataSets: ChartDataSets[] = [
+  public chartDataSets = [
     this.viewerDataSet,
     this.viewerRegistredDataSet,
     this.viewerWithTokenDataSet,
-    this.tipLastHoursDataSet
+    this.tipLastHoursDataSet,
   ];
 
   public chartType: ChartType = 'line';
@@ -92,7 +89,7 @@ export class LiveNbViewerComponent implements OnInit, OnDestroy {
   private readonly defaultOptions = {
     typeView: '24h',
     dateMin: null as Date,
-    dateMax: null as Date
+    dateMax: null as Date,
   };
 
   private unsubscribe = new Subject<void>();
@@ -109,9 +106,7 @@ export class LiveNbViewerComponent implements OnInit, OnDestroy {
         takeUntil(this.unsubscribe),
         map((v) =>
           Object.assign({}, v, {
-            dateMax: DateTime.fromJSDate(v.dateMax)
-              .plus({ day: 1 })
-              .toJSDate()
+            dateMax: DateTime.fromJSDate(v.dateMax).plus({ day: 1 }).toJSDate(),
           })
         )
       )
@@ -125,7 +120,7 @@ export class LiveNbViewerComponent implements OnInit, OnDestroy {
           viewer: { t: stat.date, y: stat.numViewers },
           viewerRegistred: { t: stat.date, y: stat.numRegisteredViewers },
           viewerWithToken: { t: stat.date, y: stat.numTokenedViewers },
-          tiplasthours: { t: stat.date, y: stat.tipsInLastHour }
+          tiplasthours: { t: stat.date, y: stat.tipsInLastHour },
         }))
       )
       .subscribe((d) => {
@@ -142,12 +137,7 @@ export class LiveNbViewerComponent implements OnInit, OnDestroy {
   }
 
   private updateGraph(val: { typeView: string; dateMin: Date; dateMax: Date }) {
-    const firstDate =
-      val.typeView === '24h'
-        ? DateTime.local()
-            .plus({ day: -1 })
-            .toJSDate()
-        : val.dateMin;
+    const firstDate = val.typeView === '24h' ? DateTime.local().plus({ day: -1 }).toJSDate() : val.dateMin;
     const lastDate = val.typeView === '24h' ? new Date() : val.dateMax;
 
     this.viewerData.length = 0;
@@ -163,7 +153,7 @@ export class LiveNbViewerComponent implements OnInit, OnDestroy {
           viewer: { t: stat.date, y: stat.numViewers },
           viewerRegistred: { t: stat.date, y: stat.numRegisteredViewers },
           viewerWithToken: { t: stat.date, y: stat.numTokenedViewers },
-          tiplasthours: { t: stat.date, y: stat.tipsInLastHour }
+          tiplasthours: { t: stat.date, y: stat.tipsInLastHour },
         }))
       )
 

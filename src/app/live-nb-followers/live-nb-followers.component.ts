@@ -1,45 +1,42 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ChartOptions, ChartType, ChartDataSets, ChartPoint } from 'chart.js';
+import { ChartOptions, ChartType, ChartDataset, ScatterDataPoint } from 'chart.js';
 import { UntypedFormGroup, UntypedFormBuilder } from '@angular/forms';
 import { Observable, Subject } from 'rxjs';
 import { ShowStatisticsService } from '../show-statistics.service';
-import { map, flatMap, takeUntil, filter, skip } from 'rxjs/operators';
+import { map, mergeMap, takeUntil, filter, skip } from 'rxjs/operators';
 import { DateTime } from 'luxon';
 
 @Component({
   selector: 'app-live-nb-followers',
   templateUrl: './live-nb-followers.component.html',
-  styleUrls: ['./live-nb-followers.component.scss']
+  styleUrls: ['./live-nb-followers.component.scss'],
 })
 export class LiveNbFollowersComponent implements OnInit, OnDestroy {
   public chartOptions: ChartOptions = {
     responsive: true,
-    legend: {
-      position: 'right'
-    },
     scales: {
-      xAxes: [
-        {
-          type: 'time'
-        }
-      ],
-      yAxes: [{}]
+      x: {
+        type: 'time',
+      },
     },
     plugins: {
-      colorschemes: {
+      legend: {
+        position: 'right',
+      },
+      /*  colorschemes: {
         scheme: 'brewer.Paired12',
         override: true
-      }
-    }
+      }*/
+    },
   };
 
-  public followersData = new Array<ChartPoint>();
-  public followersDataSet: ChartDataSets = {
+  public followersData = new Array<{ t: Date; y: number }>();
+  public followersDataSet: ChartDataset<'line', { t: Date; y: number }[]> = {
     label: 'Followes',
-    data: this.followersData
+    data: this.followersData,
   };
 
-  public chartDataSets: ChartDataSets[] = [this.followersDataSet];
+  public chartDataSets = [this.followersDataSet];
 
   public chartType: ChartType = 'line';
   public chartLegend = true;
@@ -51,7 +48,7 @@ export class LiveNbFollowersComponent implements OnInit, OnDestroy {
   private readonly defaultOptions = {
     typeView: '24h',
     dateMin: null as Date,
-    dateMax: null as Date
+    dateMax: null as Date,
   };
 
   private unsubscribe = new Subject<void>();
@@ -68,9 +65,7 @@ export class LiveNbFollowersComponent implements OnInit, OnDestroy {
         takeUntil(this.unsubscribe),
         map((v) =>
           Object.assign({}, v, {
-            dateMax: DateTime.fromJSDate(v.dateMax)
-              .plus({ day: 1 })
-              .toJSDate()
+            dateMax: DateTime.fromJSDate(v.dateMax).plus({ day: 1 }).toJSDate(),
           })
         )
       )
@@ -81,7 +76,7 @@ export class LiveNbFollowersComponent implements OnInit, OnDestroy {
         skip(1),
         filter((v) => !!v),
         map((stat) => ({
-          followers: { t: stat.date, y: stat.numFollowers }
+          followers: { t: stat.date, y: stat.numFollowers },
         }))
       )
       .subscribe((d) => {
@@ -95,21 +90,16 @@ export class LiveNbFollowersComponent implements OnInit, OnDestroy {
   }
 
   private updateGraph(val: { typeView: string; dateMin: Date; dateMax: Date }) {
-    const firstDate =
-      val.typeView === '24h'
-        ? DateTime.local()
-            .plus({ day: -1 })
-            .toJSDate()
-        : val.dateMin;
+    const firstDate = val.typeView === '24h' ? DateTime.local().plus({ day: -1 }).toJSDate() : val.dateMin;
     const lastDate = val.typeView === '24h' ? new Date() : val.dateMax;
 
     this.followersData.length = 0;
     this.showStatistics
       .interval(firstDate, lastDate)
       .pipe(
-        flatMap((list) => list),
+        mergeMap((list) => list),
         map((stat) => ({
-          followers: { t: stat.date, y: stat.numFollowers }
+          followers: { t: stat.date, y: stat.numFollowers },
         }))
       )
 

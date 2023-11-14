@@ -1,47 +1,38 @@
 import { Component, OnInit } from '@angular/core';
-import { ChartOptions, ChartType, ChartDataSets } from 'chart.js';
-import { Label } from 'ng2-charts';
+import { ChartOptions, ChartType, ChartDataset } from 'chart.js';
 import { UntypedFormGroup, UntypedFormBuilder } from '@angular/forms';
 import { StatTokenService } from '../stat-token.service';
-import { DateTime } from 'luxon';
 
 @Component({
   selector: 'app-tip-by-weekday',
   templateUrl: './tip-by-weekday.component.html',
-  styleUrls: ['./tip-by-weekday.component.scss']
+  styleUrls: ['./tip-by-weekday.component.scss'],
 })
 export class TipByWeekdayComponent implements OnInit {
   public chartOptions: ChartOptions = {
     responsive: true,
-    legend: {
-      position: 'right'
-    },
     scales: {
-      xAxes: [
-        {
-          stacked: true
-        }
-      ],
-      yAxes: [
-        {
-          stacked: true
-        }
-      ]
+      x: {
+        stacked: true,
+      },
     },
     plugins: {
-      colorschemes: {
+      legend: {
+        position: 'right',
+      },
+      /*    colorschemes: {
         scheme: 'brewer.Paired12',
         override: true
-      }
-    }
+      }*/
+    },
   };
-  public chartLabels: Label[] = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'];
-  public chartDataSets: ChartDataSets[] = [
+  public chartLabels = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'];
+  public chartDataSets: ChartDataset[] = [
     {
       label: '',
       stack: '',
-      data: []
-    }
+      data: [],
+    },
   ];
   public chartType: ChartType = 'bar';
   public chartLegend = true;
@@ -50,7 +41,7 @@ export class TipByWeekdayComponent implements OnInit {
 
   private readonly defaultOptions = {
     typeUser: 'tipper',
-    chartType: 'bar' as ChartType
+    chartType: 'bar' as ChartType,
   };
   constructor(private statToken: StatTokenService, formBuilder: UntypedFormBuilder) {
     this.graphOptions = formBuilder.group(this.defaultOptions);
@@ -86,7 +77,7 @@ export class TipByWeekdayComponent implements OnInit {
               return tipDate.has(u) ? tipDate.get(u) : 0;
             }
             return 0;
-          })
+          }),
         };
       });
     });

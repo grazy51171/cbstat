@@ -7,7 +7,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatLegacyRadioModule as MatRadioModule } from '@angular/material/legacy-radio';
 import { ReactiveFormsModule } from '@angular/forms';
-import { ChartsModule } from 'ng2-charts';
+import { NgChartsModule } from 'ng2-charts';
 
 describe('TipByDateComponent', () => {
   let component: TipByDateComponent;
@@ -22,7 +22,7 @@ describe('TipByDateComponent', () => {
         MatDividerModule,
         MatDatepickerModule,
         MatExpansionModule,
-        ChartsModule,
+        NgChartsModule,
         ReactiveFormsModule
       ]
     }).compileComponents();

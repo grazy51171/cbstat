@@ -1,12 +1,12 @@
 import { AfterViewInit, Component, OnInit, ViewChild, Input } from '@angular/core';
-import { MatLegacyPaginator as MatPaginator } from '@angular/material/legacy-paginator';
+import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { MatLegacyTable as MatTable } from '@angular/material/legacy-table';
+import { MatTable } from '@angular/material/table';
 import { TipTableDataSource } from './tip-table-datasource';
 import { StatTokenService } from '../stat-token.service';
 import { ITransaction } from '../database/cb-statistic.database';
 import { Observable, from } from 'rxjs';
-import { flatMap } from 'rxjs/operators';
+import { mergeMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-tip-table',
@@ -31,7 +31,7 @@ export class TipTableComponent implements AfterViewInit, OnInit {
 
   ngOnInit() {
     this.dataSource = new TipTableDataSource(this.statTokenService, this.update);
-    this.dataLength = this.update.pipe(flatMap(() => from(this.statTokenService.count())));
+    this.dataLength = this.update.pipe(mergeMap(() => from(this.statTokenService.count())));
   }
 
   ngAfterViewInit() {

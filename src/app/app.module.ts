@@ -8,28 +8,28 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MainNavComponent } from './main-nav/main-nav.component';
 import { LayoutModule } from '@angular/cdk/layout';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatLegacyButtonModule as MatButtonModule } from '@angular/material/legacy-button';
+import { MatButtonModule } from '@angular/material/button';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatIconModule } from '@angular/material/icon';
-import { MatLegacyListModule as MatListModule } from '@angular/material/legacy-list';
+import { MatListModule } from '@angular/material/list';
 import { registerLocaleData } from '@angular/common';
 import localeFr from '@angular/common/locales/fr';
 import { TipTableComponent } from './tip-table/tip-table.component';
-import { MatLegacyTableModule as MatTableModule } from '@angular/material/legacy-table';
-import { MatLegacyPaginatorModule as MatPaginatorModule } from '@angular/material/legacy-paginator';
+import { MatTableModule } from '@angular/material/table';
+import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { TipByUserComponent } from './tip-by-user/tip-by-user.component';
-import { ChartsModule } from 'ng2-charts';
-import { MaterialFileInputModule } from 'ngx-material-file-input';
-import { MatLegacyCardModule as MatCardModule } from '@angular/material/legacy-card';
-import { MatLegacyCheckbox as MatCheckbox, MatLegacyCheckboxModule as MatCheckboxModule } from '@angular/material/legacy-checkbox';
+import { NgChartsModule } from 'ng2-charts';
+import { MaterialFileInputModule } from '@franbueno/ngx-material-file-input';
+import { MatCardModule } from '@angular/material/card';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatExpansionModule } from '@angular/material/expansion';
-import { MatLegacyFormFieldModule as MatFormFieldModule } from '@angular/material/legacy-form-field';
-import { MatLegacyInputModule as MatInputModule } from '@angular/material/legacy-input';
-import { MatLegacyProgressSpinnerModule as MatProgressSpinnerModule } from '@angular/material/legacy-progress-spinner';
-import { MatLegacyRadioModule as MatRadioModule } from '@angular/material/legacy-radio';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatRadioModule } from '@angular/material/radio';
 import { ReactiveFormsModule } from '@angular/forms';
 import { TipByDateComponent } from './tip-by-date/tip-by-date.component';
 import { TipByWeekdayComponent } from './tip-by-weekday/tip-by-weekday.component';
@@ -39,6 +39,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { LiveNbViewerComponent } from './live-nb-viewer/live-nb-viewer.component';
 import { LiveNbFollowersComponent } from './live-nb-followers/live-nb-followers.component';
 import { AboutComponent } from './about/about.component';
+import 'luxon';
+import 'chartjs-adapter-luxon';
 
 registerLocaleData(localeFr, 'fr');
 
@@ -55,7 +57,7 @@ registerLocaleData(localeFr, 'fr');
     LiveStatsComponent,
     LiveNbViewerComponent,
     LiveNbFollowersComponent,
-    AboutComponent
+    AboutComponent,
   ],
   imports: [
     BrowserModule,
@@ -81,10 +83,10 @@ registerLocaleData(localeFr, 'fr');
     MatInputModule,
     MatExpansionModule,
     HttpClientModule,
-    ChartsModule,
-    MaterialFileInputModule
+    NgChartsModule,
+    MaterialFileInputModule,
   ],
   providers: [{ provide: LOCALE_ID, useValue: 'fr' }],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
 export class AppModule {}

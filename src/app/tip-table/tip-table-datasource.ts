@@ -1,7 +1,7 @@
 import { DataSource } from '@angular/cdk/collections';
-import { MatLegacyPaginator as MatPaginator } from '@angular/material/legacy-paginator';
+import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { flatMap } from 'rxjs/operators';
+import { mergeMap } from 'rxjs/operators';
 import { Observable, merge, from, BehaviorSubject } from 'rxjs';
 import { ITransaction } from '../database/cb-statistic.database';
 import { StatTokenService } from '../stat-token.service';
@@ -32,7 +32,7 @@ export class TipTableDataSource extends DataSource<ITransaction> {
     const dataMutations = [this.update, this.paginator.page, this.sort.sortChange, this.loginFilterSubject];
 
     return merge(...dataMutations).pipe(
-      flatMap(() => {
+      mergeMap(() => {
         return from(
           this.statTokens.allPaginateAndSort(
             this.paginator.pageSize,
