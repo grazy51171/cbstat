@@ -34,15 +34,12 @@
   <mat-card-title>Import</mat-card-title>
   <mat-card-content>
     <p>Sélectioner les fichiers à importer</p>
+    <button type="button" mat-raised-button color="primary" (click)="fileInput.click()">
+      <mat-icon matSuffix>folder</mat-icon>Fichier à importer (transactions.csv)
+    </button>
+    <input hidden type="file" accept=".csv" (change)="onChange($event.target)" #fileInput />
+    <br />
 
-    <mat-form-field>
-      <!--   <ngx-mat-file-input
-        accept=".csv"
-        placeholder="Fichier à importer (transactions.csv)"
-        (change)="onChange($event.target)"
-      ></ngx-mat-file-input> -->
-      <mat-icon matSuffix>folder</mat-icon>
-    </mat-form-field>
     <p *ngIf="importProgress"><mat-spinner></mat-spinner> Import en cours.</p>
     <p *ngIf="importFinish">Import fini.</p>
     <div>
