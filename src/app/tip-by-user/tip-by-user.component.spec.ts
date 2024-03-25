@@ -1,11 +1,11 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { MatLegacyCardModule as MatCardModule } from '@angular/material/legacy-card';
+import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
-import { MatLegacyRadioModule as MatRadioModule } from '@angular/material/legacy-radio';
+import { MatRadioModule } from '@angular/material/radio';
 import { ReactiveFormsModule } from '@angular/forms';
 
 import { TipByUserComponent } from './tip-by-user.component';
-import { ChartsModule } from 'ng2-charts';
+import { NgChartsModule } from 'ng2-charts';
 
 describe('TipByUserComponent', () => {
   let component: TipByUserComponent;
@@ -14,7 +14,7 @@ describe('TipByUserComponent', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [TipByUserComponent],
-      imports: [MatCardModule, MatRadioModule, MatDividerModule, ReactiveFormsModule, ChartsModule]
+      imports: [MatCardModule, MatRadioModule, MatDividerModule, ReactiveFormsModule, NgChartsModule],
     }).compileComponents();
   }));
 

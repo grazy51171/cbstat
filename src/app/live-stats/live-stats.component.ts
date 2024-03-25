@@ -4,12 +4,12 @@ import { ShowStatisticsService } from '../show-statistics.service';
 import { UntypedFormGroup, UntypedFormBuilder } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { IShowStatistic } from '../database/show-statistic';
-import { first, distinctUntilChanged } from 'rxjs/operators';
+import { distinctUntilChanged } from 'rxjs/operators';
 
 @Component({
   selector: 'app-live-stats',
   templateUrl: './live-stats.component.html',
-  styleUrls: ['./live-stats.component.scss']
+  styleUrls: ['./live-stats.component.scss'],
 })
 export class LiveStatsComponent implements OnInit {
   public configurations: UntypedFormGroup;
@@ -17,7 +17,7 @@ export class LiveStatsComponent implements OnInit {
   public currentStatValue = new Observable<IShowStatistic>();
 
   private readonly defaultConfig = {
-    statUrl: ''
+    statUrl: '',
   };
 
   constructor(
@@ -39,7 +39,7 @@ export class LiveStatsComponent implements OnInit {
       )
       .subscribe((v) => {
         this.configurations.setValue({
-          statUrl: v.urlStatistic
+          statUrl: v.urlStatistic,
         });
       });
   }
@@ -51,7 +51,7 @@ export class LiveStatsComponent implements OnInit {
   public updateConfig(config: { statUrl: string }) {
     this.appConfigService.save({
       id: 0,
-      urlStatistic: config.statUrl
+      urlStatistic: config.statUrl,
     });
   }
 }

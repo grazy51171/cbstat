@@ -8,9 +8,8 @@ describe('LiveNbViewerComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ LiveNbViewerComponent ]
-    })
-    .compileComponents();
+      declarations: [LiveNbViewerComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

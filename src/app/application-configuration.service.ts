@@ -5,12 +5,12 @@ import { CbStatisticDatabase } from './database/cb-statistic.database';
 import { IAppConfiguration } from './database/app-configuration';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ApplicationConfigurationService {
   private defaultConfig: IAppConfiguration = {
     id: 0,
-    urlStatistic: null
+    urlStatistic: null,
   };
 
   private current = new BehaviorSubject<IAppConfiguration>(this.defaultConfig);
