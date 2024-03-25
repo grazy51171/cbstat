@@ -1,25 +1,14 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-
 import { LiveStatsComponent } from './live-stats.component';
+import { MockBuilder, MockRender } from 'ng-mocks';
+import { AppModule } from '../app.module';
 
 describe('LiveStatsComponent', () => {
-  let component: LiveStatsComponent;
-  let fixture: ComponentFixture<LiveStatsComponent>;
-
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      declarations: [ LiveStatsComponent ]
-    })
-    .compileComponents();
-  }));
-
   beforeEach(() => {
-    fixture = TestBed.createComponent(LiveStatsComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+    return MockBuilder(LiveStatsComponent, AppModule);
   });
 
   it('should create', () => {
-    expect(component).toBeTruthy();
+    const fixture = MockRender(LiveStatsComponent);
+    expect(fixture.point.componentInstance).toBeDefined();
   });
 });
