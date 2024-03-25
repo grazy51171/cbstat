@@ -20,7 +20,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { TipByUserComponent } from './tip-by-user/tip-by-user.component';
 import { NgChartsModule } from 'ng2-charts';
-import { MaterialFileInputModule } from '@franbueno/ngx-material-file-input';
+// import { MaterialFileInputModule } from '@franbueno/ngx-material-file-input';
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatNativeDateModule } from '@angular/material/core';
@@ -84,7 +84,7 @@ registerLocaleData(localeFr, 'fr');
     MatExpansionModule,
     HttpClientModule,
     NgChartsModule,
-    MaterialFileInputModule,
+    // MaterialFileInputModule,
   ],
   providers: [{ provide: LOCALE_ID, useValue: 'fr' }],
   bootstrap: [AppComponent],

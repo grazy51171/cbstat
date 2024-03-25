@@ -19,9 +19,7 @@
         Cliquer sur "Fichier à importer" ci dessous pour le charger dans l'application (celà peut prendre quelques
         minutes).
       </li>
-      <li>
-        Puis selectionner à gauche le graphique souhaité.
-      </li>
+      <li>Puis selectionner à gauche le graphique souhaité.</li>
       <li>
         Si c'est un ordinateur partagé, n'oubliez pas de cliquer sur "Effacer les données" une fois que vous avez fini.
       </li>
@@ -38,11 +36,11 @@
     <p>Sélectioner les fichiers à importer</p>
 
     <mat-form-field>
-      <ngx-mat-file-input
+      <!--   <ngx-mat-file-input
         accept=".csv"
         placeholder="Fichier à importer (transactions.csv)"
         (change)="onChange($event.target)"
-      ></ngx-mat-file-input>
+      ></ngx-mat-file-input> -->
       <mat-icon matSuffix>folder</mat-icon>
     </mat-form-field>
     <p *ngIf="importProgress"><mat-spinner></mat-spinner> Import en cours.</p>
@@ -55,9 +53,7 @@
 </mat-card>
 <mat-divider></mat-divider>
 <mat-card>
-  <mat-card-title>
-    Données :
-  </mat-card-title>
+  <mat-card-title> Données : </mat-card-title>
   <mat-card-content>
     <p>Nombre de ligne {{ linecount | async }}</p>
     <p *ngIf="limits | async as limitval">Du {{ limitval.first | date }} au {{ limitval.last | date }}</p>

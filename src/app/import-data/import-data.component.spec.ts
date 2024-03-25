@@ -6,7 +6,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatLegacyProgressSpinnerModule as MatProgressSpinnerModule } from '@angular/material/legacy-progress-spinner';
 
 import { ImportDataComponent } from './import-data.component';
-import { MaterialFileInputModule } from 'ngx-material-file-input';
+// import { MaterialFileInputModule } from 'ngx-material-file-input';
 import { MockComponent } from 'ng-mocks';
 import { TipTableComponent } from '../tip-table/tip-table.component';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -22,11 +22,11 @@ describe('ImportDataComponent', () => {
         NoopAnimationsModule,
         MatCardModule,
         MatDividerModule,
-        MaterialFileInputModule,
+        // MaterialFileInputModule,
         MatIconModule,
         MatFormFieldModule,
-        MatProgressSpinnerModule
-      ]
+        MatProgressSpinnerModule,
+      ],
     }).compileComponents();
   }));
 
