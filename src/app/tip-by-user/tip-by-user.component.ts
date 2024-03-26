@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ChartDataset, ChartOptions, ChartType } from 'chart.js';
 import { StatTokenService } from '../stat-token.service';
-import { ReactiveFormsModule, UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { BaseChartDirective } from 'ng2-charts';
 import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
@@ -38,22 +38,19 @@ export class TipByUserComponent implements OnInit {
     },
   ];
 
-  public graphOptions: UntypedFormGroup;
+  public graphOptions = new FormGroup({
+    typeUser: new FormControl('tipper'),
+    chartType: new FormControl('pie' as ChartType),
+  });
 
-  private readonly defaultOptions = {
-    typeUser: 'tipper',
-    chartType: 'pie' as ChartType,
-  };
-  constructor(private statToken: StatTokenService, private formBuilder: UntypedFormBuilder) {
-    this.graphOptions = formBuilder.group(this.defaultOptions);
-  }
+  constructor(private statToken: StatTokenService) {}
 
   ngOnInit() {
-    this.updateGraph(this.defaultOptions);
+    this.updateGraph(this.graphOptions.value);
     this.graphOptions.valueChanges.subscribe((val) => this.updateGraph(val));
   }
 
-  private updateGraph(val: { chartType: ChartType; typeUser: string }) {
+  private updateGraph(val: Partial<{ chartType: ChartType; typeUser: string }>) {
     this.chartType = val.chartType;
     this.statToken.sumByUser(val.typeUser !== 'tipper').then((tipByUser) => {
       const tipByUserSorted = Array.from(tipByUser.entries())
