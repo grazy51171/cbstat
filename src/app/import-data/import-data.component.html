@@ -55,5 +55,6 @@
     <p>Nombre de ligne {{ linecount | async }}</p>
     <p *ngIf="limits | async as limitval">Du {{ limitval.first | date }} au {{ limitval.last | date }}</p>
 
-    <app-tip-table [update]="dataUpdated"></app-tip-table> </mat-card-content
-></mat-card>
+    <app-tip-table [update]="dataUpdated"></app-tip-table>
+  </mat-card-content>
+</mat-card>
