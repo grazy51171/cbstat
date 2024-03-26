@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ChartOptions, ChartType, ChartDataset } from 'chart.js';
-import { UntypedFormGroup, UntypedFormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { UntypedFormGroup, UntypedFormBuilder, ReactiveFormsModule, FormControl, FormGroup } from '@angular/forms';
 import { StatTokenService } from '../stat-token.service';
 import { BaseChartDirective } from 'ng2-charts';
 import { MatDividerModule } from '@angular/material/divider';
@@ -42,22 +42,19 @@ export class TipByWeekdayComponent implements OnInit {
   public chartType: ChartType = 'bar';
   public chartLegend = true;
 
-  public graphOptions: UntypedFormGroup;
+  public graphOptions = new FormGroup({
+    typeUser: new FormControl('tipper'),
+    chartType: new FormControl('bar' as ChartType),
+  });
 
-  private readonly defaultOptions = {
-    typeUser: 'tipper',
-    chartType: 'bar' as ChartType,
-  };
-  constructor(private statToken: StatTokenService, formBuilder: UntypedFormBuilder) {
-    this.graphOptions = formBuilder.group(this.defaultOptions);
-  }
+  constructor(private statToken: StatTokenService) {}
 
   ngOnInit() {
-    this.updateGraph(this.defaultOptions);
+    this.updateGraph(this.graphOptions.value);
     this.graphOptions.valueChanges.subscribe((val) => this.updateGraph(val));
   }
 
-  private updateGraph(val: { chartType: ChartType; typeUser: string }) {
+  private updateGraph(val: { chartType?: ChartType; typeUser?: string }) {
     this.chartType = val.chartType;
     this.statToken.sumByDayOfWeek(val.typeUser !== 'tipper').then((tipByDate) => {
       const dateList = [1, 2, 3, 4, 5, 6, 7];
