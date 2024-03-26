@@ -1,17 +1,21 @@
 import { AfterViewInit, Component, OnInit, ViewChild, Input } from '@angular/core';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
-import { MatTable } from '@angular/material/table';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatSort, MatSortModule } from '@angular/material/sort';
+import { MatHeaderRow, MatTable, MatTableModule } from '@angular/material/table';
 import { TipTableDataSource } from './tip-table-datasource';
 import { StatTokenService } from '../stat-token.service';
 import { ITransaction } from '../database/cb-statistic.database';
 import { Observable, from } from 'rxjs';
 import { mergeMap } from 'rxjs/operators';
+import { CommonModule } from '@angular/common';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
+  standalone: true,
   selector: 'app-tip-table',
   templateUrl: './tip-table.component.html',
-  styleUrls: ['./tip-table.component.scss']
+  styleUrls: ['./tip-table.component.scss'],
+  imports: [CommonModule, MatPaginatorModule, MatSortModule, MatTableModule],
 })
 export class TipTableComponent implements AfterViewInit, OnInit {
   @Input()

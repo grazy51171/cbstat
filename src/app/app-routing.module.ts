@@ -1,5 +1,4 @@
-import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import { Routes } from '@angular/router';
 import { ImportDataComponent } from './import-data/import-data.component';
 import { TipByUserComponent } from './tip-by-user/tip-by-user.component';
 import { TipByDateComponent } from './tip-by-date/tip-by-date.component';
@@ -10,7 +9,7 @@ import { LiveNbViewerComponent } from './live-nb-viewer/live-nb-viewer.component
 import { LiveNbFollowersComponent } from './live-nb-followers/live-nb-followers.component';
 import { AboutComponent } from './about/about.component';
 
-const routes: Routes = [
+const routeConfig: Routes = [
   { path: 'import', component: ImportDataComponent },
   { path: 'byuser', component: TipByUserComponent },
   { path: 'bydate', component: TipByDateComponent },
@@ -21,11 +20,7 @@ const routes: Routes = [
   { path: 'livenbfollowers', component: LiveNbFollowersComponent },
   { path: 'about', component: AboutComponent },
 
-  { path: '**', redirectTo: 'import' }
+  { path: '**', redirectTo: 'import' },
 ];
 
-@NgModule({
-  imports: [RouterModule.forRoot(routes, {})],
-  exports: [RouterModule]
-})
-export class AppRoutingModule {}
+export default routeConfig;

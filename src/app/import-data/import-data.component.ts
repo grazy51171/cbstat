@@ -2,11 +2,28 @@ import { Component, OnInit } from '@angular/core';
 import { StatTokenService } from '../stat-token.service';
 import { Subject, Observable, from, of } from 'rxjs';
 import { delay, mergeMap } from 'rxjs/operators';
+import { CommonModule } from '@angular/common';
+import { TipTableComponent } from '../tip-table/tip-table.component';
+import { MatCardModule } from '@angular/material/card';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
+  standalone: true,
   selector: 'app-import-data',
   templateUrl: './import-data.component.html',
   styleUrls: ['./import-data.component.scss'],
+  imports: [
+    CommonModule,
+    MatCardModule,
+    MatDividerModule,
+    MatProgressSpinnerModule,
+    MatIconModule,
+    MatButtonModule,
+    TipTableComponent,
+  ],
 })
 export class ImportDataComponent implements OnInit {
   public importProgress = false;
