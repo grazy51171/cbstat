@@ -1,18 +1,38 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ChartOptions, ChartType, ChartDataset, ScatterDataPoint } from 'chart.js';
-import { UntypedFormGroup, UntypedFormBuilder } from '@angular/forms';
+import { ChartOptions, ChartType, ChartDataset } from 'chart.js';
+import { UntypedFormGroup, UntypedFormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { Observable, Subject } from 'rxjs';
 import { ShowStatisticsService } from '../show-statistics.service';
-import { map, flatMap, takeUntil, filter, skip } from 'rxjs/operators';
+import { map, takeUntil, filter, skip, mergeMap } from 'rxjs/operators';
 import { DateTime } from 'luxon';
+import { BaseChartDirective } from 'ng2-charts';
+import { MatCardModule } from '@angular/material/card';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { CommonModule } from '@angular/common';
 
 type DateTimePoint = { t: Date; y: number };
 type DateTimePointArray = Array<DateTimePoint>;
 
 @Component({
+  standalone: true,
   selector: 'app-live-nb-viewer',
   templateUrl: './live-nb-viewer.component.html',
   styleUrls: ['./live-nb-viewer.component.scss'],
+  imports: [
+    CommonModule,
+    BaseChartDirective,
+    MatCardModule,
+    MatDividerModule,
+    MatRadioModule,
+    ReactiveFormsModule,
+    MatDatepickerModule,
+    MatFormFieldModule,
+    MatExpansionModule,
+  ],
 })
 export class LiveNbViewerComponent implements OnInit, OnDestroy {
   public chartOptions: ChartOptions = {
@@ -30,19 +50,12 @@ export class LiveNbViewerComponent implements OnInit, OnDestroy {
         type: 'linear',
         display: true,
         position: 'right',
-        /*    gridLines: {
-            drawOnChartArea: false // only want the grid lines for one axis to show up
-          }*/
       },
     },
     plugins: {
       legend: {
         position: 'right',
       },
-      /* colorschemes: {
-        scheme: 'brewer.Paired12',
-        override: true
-      }*/
     },
   };
 
@@ -148,7 +161,7 @@ export class LiveNbViewerComponent implements OnInit, OnDestroy {
     this.showStatistics
       .interval(firstDate, lastDate)
       .pipe(
-        flatMap((list) => list),
+        mergeMap((list) => list),
         map((stat) => ({
           viewer: { t: stat.date, y: stat.numViewers },
           viewerRegistred: { t: stat.date, y: stat.numRegisteredViewers },
@@ -156,7 +169,6 @@ export class LiveNbViewerComponent implements OnInit, OnDestroy {
           tiplasthours: { t: stat.date, y: stat.tipsInLastHour },
         }))
       )
-
       .subscribe((d) => {
         this.viewerData.push(d.viewer);
         this.viewerRegistredData.push(d.viewerRegistred);

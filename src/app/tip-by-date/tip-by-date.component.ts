@@ -1,43 +1,60 @@
 import { Component, OnInit } from '@angular/core';
 import { ChartOptions, ChartType, ChartDataset } from 'chart.js';
-import { UntypedFormGroup, UntypedFormBuilder } from '@angular/forms';
+import { UntypedFormGroup, UntypedFormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { DateTime } from 'luxon';
 import { from, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { StatTokenService } from '../stat-token.service';
+import { BaseChartDirective } from 'ng2-charts';
+import { MatCardModule } from '@angular/material/card';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { CommonModule } from '@angular/common';
+import { MatInputModule } from '@angular/material/input';
 
 @Component({
+  standalone: true,
   selector: 'app-tip-by-date',
   templateUrl: './tip-by-date.component.html',
-  styleUrls: ['./tip-by-date.component.scss']
+  styleUrls: ['./tip-by-date.component.scss'],
+  imports: [
+    CommonModule,
+    BaseChartDirective,
+    MatCardModule,
+    MatDividerModule,
+    MatRadioModule,
+    ReactiveFormsModule,
+    MatDatepickerModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatExpansionModule,
+  ],
 })
 export class TipByDateComponent implements OnInit {
   public chartOptions: ChartOptions = {
     responsive: true,
     scales: {
-      x:
-        {
-          stacked: true
-        },
+      x: {
+        stacked: true,
+      },
     },
     plugins: {
       legend: {
-        position: 'right'
+        position: 'right',
       },
-    /*  colorschemes: {
-        scheme: 'brewer.Paired12',
-        override: true
-      }*/
-    }
+    },
   };
   public chartLabels = [];
   public chartDataSets: ChartDataset[] = [
     {
       label: '',
       stack: '',
-      data: []
-    }
+      data: [],
+    },
   ];
   public chartType: ChartType = 'bar';
   public chartLegend = true;
@@ -50,7 +67,7 @@ export class TipByDateComponent implements OnInit {
     typeUser: 'tipper',
     chartType: 'bar' as ChartType,
     dateMin: null as Date,
-    dateMax: null as Date
+    dateMax: null as Date,
   };
   constructor(private statToken: StatTokenService, private formBuilder: UntypedFormBuilder) {
     this.graphOptions = formBuilder.group(this.defaultOptions);
@@ -63,9 +80,7 @@ export class TipByDateComponent implements OnInit {
       .pipe(
         map((v) =>
           Object.assign({}, v, {
-            dateMax: DateTime.fromJSDate(v.dateMax)
-              .plus({ day: 1 })
-              .toJSDate()
+            dateMax: DateTime.fromJSDate(v.dateMax).plus({ day: 1 }).toJSDate(),
           })
         )
       )
@@ -92,7 +107,7 @@ export class TipByDateComponent implements OnInit {
           data: dateList.map((d) => {
             const tipDate = tipByDate.get(d);
             return tipDate.has(u) ? tipDate.get(u) : 0;
-          })
+          }),
         };
       });
       this.chartLabels = dateList.map((d) => DateTime.fromISO(d).toLocaleString());

@@ -1,12 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 import { ChartOptions, ChartType, ChartDataset } from 'chart.js';
-import { UntypedFormGroup, UntypedFormBuilder } from '@angular/forms';
+import { UntypedFormGroup, UntypedFormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { StatTokenService } from '../stat-token.service';
+import { BaseChartDirective } from 'ng2-charts';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatCardModule } from '@angular/material/card';
 
 @Component({
+  standalone: true,
   selector: 'app-tip-by-weekday',
   templateUrl: './tip-by-weekday.component.html',
   styleUrls: ['./tip-by-weekday.component.scss'],
+  imports: [BaseChartDirective, MatCardModule, MatDividerModule, MatRadioModule, ReactiveFormsModule],
 })
 export class TipByWeekdayComponent implements OnInit {
   public chartOptions: ChartOptions = {
@@ -15,15 +21,14 @@ export class TipByWeekdayComponent implements OnInit {
       x: {
         stacked: true,
       },
+      y: {
+        stacked: true,
+      },
     },
     plugins: {
       legend: {
         position: 'right',
       },
-      /*    colorschemes: {
-        scheme: 'brewer.Paired12',
-        override: true
-      }*/
     },
   };
   public chartLabels = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'];

@@ -1,15 +1,36 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ChartOptions, ChartType, ChartDataset, ScatterDataPoint } from 'chart.js';
-import { UntypedFormGroup, UntypedFormBuilder } from '@angular/forms';
+import { ChartOptions, ChartType, ChartDataset } from 'chart.js';
+import { UntypedFormGroup, UntypedFormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { Observable, Subject } from 'rxjs';
-import { ShowStatisticsService } from '../show-statistics.service';
 import { map, mergeMap, takeUntil, filter, skip } from 'rxjs/operators';
 import { DateTime } from 'luxon';
+import { BaseChartDirective } from 'ng2-charts';
+import { MatCardModule } from '@angular/material/card';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { CommonModule } from '@angular/common';
+
+import { ShowStatisticsService } from '../show-statistics.service';
 
 @Component({
+  standalone: true,
   selector: 'app-live-nb-followers',
   templateUrl: './live-nb-followers.component.html',
   styleUrls: ['./live-nb-followers.component.scss'],
+  imports: [
+    CommonModule,
+    BaseChartDirective,
+    MatCardModule,
+    MatDividerModule,
+    MatRadioModule,
+    ReactiveFormsModule,
+    MatDatepickerModule,
+    MatFormFieldModule,
+    MatExpansionModule,
+  ],
 })
 export class LiveNbFollowersComponent implements OnInit, OnDestroy {
   public chartOptions: ChartOptions = {
@@ -23,10 +44,6 @@ export class LiveNbFollowersComponent implements OnInit, OnDestroy {
       legend: {
         position: 'right',
       },
-      /*  colorschemes: {
-        scheme: 'brewer.Paired12',
-        override: true
-      }*/
     },
   };
 

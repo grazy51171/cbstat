@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { DateTime } from 'luxon';
 import { from, Observable } from 'rxjs';
 import { map, filter, bufferCount, toArray, mergeMap } from 'rxjs/operators';
-import * as FileSaver from 'file-saver';
+import { saveAs } from 'file-saver-es';
 import Dexie from 'dexie';
 
 import { ITransaction, CbStatisticDatabase } from './database/cb-statistic.database';
@@ -15,7 +15,8 @@ function isValidDate(d: Date) {
   providedIn: 'root',
 })
 export class StatTokenService {
-  private static fileDataRegexp = /"(\d\d\d\d-\d\d-\d\d \d\d:\d\d:\d\d.\d\d\d)\d\d\d",(-?\d*),(-?\d*),"(.*)","(.*)","(.*)"/u;
+  private static fileDataRegexp =
+    /"(\d\d\d\d-\d\d-\d\d \d\d:\d\d:\d\d.\d\d\d)\d\d\d",(-?\d*),(-?\d*),"(.*)","(.*)","(.*)"/u;
   private static allMinDate = new Date(2000, 0);
   private static allMaxDate = new Date(3000, 0);
 
@@ -181,7 +182,7 @@ export class StatTokenService {
         return lines.join('');
       }),
       map((fileLines) => new Blob([fileLines], { type: 'text/plain;charset=utf-8' })),
-      map((blob) => FileSaver.saveAs(blob, 'transactions-export.csv'))
+      map((blob) => saveAs(blob, 'transactions-export.csv'))
     );
   }
 

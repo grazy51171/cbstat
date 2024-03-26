@@ -1,16 +1,38 @@
 import { Component, OnInit } from '@angular/core';
 import { ChartOptions, ChartType, ChartDataset } from 'chart.js';
-import { UntypedFormGroup, UntypedFormBuilder } from '@angular/forms';
+import { UntypedFormGroup, UntypedFormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { DateTime } from 'luxon';
 import { from, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { StatTokenService } from '../stat-token.service';
+import { BaseChartDirective } from 'ng2-charts';
+import { MatCardModule } from '@angular/material/card';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { CommonModule } from '@angular/common';
+import { MatInputModule } from '@angular/material/input';
 
 @Component({
+  standalone: true,
   selector: 'app-tip-by-size',
   templateUrl: './tip-by-size.component.html',
   styleUrls: ['./tip-by-size.component.scss'],
+  imports: [
+    CommonModule,
+    BaseChartDirective,
+    MatCardModule,
+    MatDividerModule,
+    MatRadioModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatExpansionModule,
+    MatInputModule,
+    MatDatepickerModule,
+  ],
 })
 export class TipBySizeComponent implements OnInit {
   public maxSum = 1000;
@@ -43,10 +65,6 @@ export class TipBySizeComponent implements OnInit {
       legend: {
         position: 'right',
       },
-      /*  colorschemes: {
-        scheme: 'brewer.Paired12',
-        override: true
-      }*/
     },
   };
   public chartLabels = [];

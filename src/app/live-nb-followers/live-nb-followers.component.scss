@@ -1,0 +1,5 @@
+.graph {
+  display: flex;
+  justify-content: center;
+  height: calc(100dvh - var(--mat-toolbar-standard-height));
+}
