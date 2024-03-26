@@ -1,20 +1,19 @@
 import { Component, OnInit } from '@angular/core';
 import { ChartOptions, ChartType, ChartDataset } from 'chart.js';
-import { UntypedFormGroup, UntypedFormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormGroup, FormControl } from '@angular/forms';
 import { DateTime } from 'luxon';
 import { from, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-
-import { StatTokenService } from '../stat-token.service';
 import { BaseChartDirective } from 'ng2-charts';
 import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatExpansionModule } from '@angular/material/expansion';
 import { CommonModule } from '@angular/common';
 import { MatInputModule } from '@angular/material/input';
+
+import { StatTokenService } from '../stat-token.service';
 
 @Component({
   standalone: true,
@@ -31,7 +30,6 @@ import { MatInputModule } from '@angular/material/input';
     MatDatepickerModule,
     MatFormFieldModule,
     MatInputModule,
-    MatExpansionModule,
   ],
 })
 export class TipByDateComponent implements OnInit {
@@ -39,6 +37,9 @@ export class TipByDateComponent implements OnInit {
     responsive: true,
     scales: {
       x: {
+        stacked: true,
+      },
+      y: {
         stacked: true,
       },
     },
@@ -59,35 +60,32 @@ export class TipByDateComponent implements OnInit {
   public chartType: ChartType = 'bar';
   public chartLegend = true;
 
-  public graphOptions: UntypedFormGroup;
-
   public dateLimits: Observable<{ first: Date; last: Date }>;
 
-  private readonly defaultOptions = {
-    typeUser: 'tipper',
-    chartType: 'bar' as ChartType,
-    dateMin: null as DateTime,
-    dateMax: null as DateTime,
-  };
-  constructor(private statToken: StatTokenService, private formBuilder: UntypedFormBuilder) {
-    this.graphOptions = formBuilder.group(this.defaultOptions);
-  }
+  public graphOptions = new FormGroup({
+    typeUser: new FormControl('tipper'),
+    chartType: new FormControl('bar' as ChartType),
+    dateMin: new FormControl(null as DateTime),
+    dateMax: new FormControl(null as DateTime),
+  });
+
+  constructor(private statToken: StatTokenService) {}
 
   ngOnInit() {
     this.dateLimits = from(this.statToken.limits());
-    this.updateGraph(this.defaultOptions);
+    this.updateGraph(this.graphOptions.value);
     this.graphOptions.valueChanges
       .pipe(
         map((v) =>
           Object.assign({}, v, {
-            dateMax: DateTime.fromJSDate(v.dateMax).plus({ day: 1 }).toJSDate(),
+            dateMax: v?.dateMax?.plus({ day: 1 }),
           })
         )
       )
       .subscribe((val) => this.updateGraph(val));
   }
 
-  private updateGraph(val: { chartType: ChartType; typeUser: string; dateMin: DateTime; dateMax: DateTime }) {
+  private updateGraph(val: Partial<{ chartType: ChartType; typeUser: string; dateMin: DateTime; dateMax: DateTime }>) {
     this.chartType = val.chartType;
     this.statToken.sumByDay(val.typeUser !== 'tipper', val.dateMin, val.dateMax).then((tipByDate) => {
       const dateList = Array.from(tipByDate.keys());

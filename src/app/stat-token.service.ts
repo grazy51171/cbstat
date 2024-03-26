@@ -7,7 +7,7 @@ import Dexie from 'dexie';
 
 import { ITransaction, CbStatisticDatabase } from './database/cb-statistic.database';
 
-function isValidDate(d: DateTime) {
+function isValidDate(d?: DateTime) {
   return d instanceof DateTime && d.isValid;
 }
 
@@ -66,7 +66,7 @@ export class StatTokenService {
     return stat;
   }
 
-  public async sumByDay(positive: boolean, dateMin: DateTime, dateMax: DateTime) {
+  public async sumByDay(positive: boolean, dateMin?: DateTime, dateMax?: DateTime) {
     const stat = new Map<string, Map<string, number>>();
     const dataSelect = this.cbStatisticDb.tipList
       .where('date')

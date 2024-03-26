@@ -1,52 +1,50 @@
-<mat-expansion-panel>
-  <mat-expansion-panel-header>
-    <mat-panel-title>Options</mat-panel-title>
-    <mat-panel-description>Permet de configurer le graphique</mat-panel-description>
-  </mat-expansion-panel-header>
-  <form class="config-contener" [formGroup]="graphOptions">
-    <section>
-      <label>Type de vue : </label>
-      <mat-radio-group formControlName="typeUser">
-        <mat-radio-button value="modele">Vue modèle (gain de token)</mat-radio-button>
-        <mat-radio-button value="tipper">Vue tipper (envoie de token)</mat-radio-button>
-      </mat-radio-group>
-    </section>
-    <section>
-      <label>Type de graphique :</label>
-      <mat-radio-group formControlName="chartType">
-        <mat-radio-button value="bar">Barres</mat-radio-button>
-        <mat-radio-button value="line">Lignes</mat-radio-button>
-      </mat-radio-group>
-    </section>
-    <section *ngIf="dateLimits | async as limits">
-      <label>Intervale :</label>
-      <mat-form-field>
-        <input
-          matInput
-          [min]="limits.first"
-          [max]="limits.last"
-          [matDatepicker]="pickerMin"
-          placeholder="Debut intervale"
-          formControlName="dateMin"
-        />
-        <mat-datepicker-toggle matSuffix [for]="pickerMin"></mat-datepicker-toggle>
-        <mat-datepicker #pickerMin></mat-datepicker>
-      </mat-form-field>
-      <mat-form-field>
-        <input
-          matInput
-          [min]="limits.first"
-          [max]="limits.last"
-          [matDatepicker]="pickerMax"
-          placeholder="Fin intervale"
-          formControlName="dateMax"
-        />
-        <mat-datepicker-toggle matSuffix [for]="pickerMax"></mat-datepicker-toggle>
-        <mat-datepicker #pickerMax></mat-datepicker>
-      </mat-form-field>
-    </section>
-  </form>
-</mat-expansion-panel>
+<mat-card>
+  <mat-card-content>
+    <form class="config-contener" [formGroup]="graphOptions">
+      <section>
+        <label>Type de vue : </label>
+        <mat-radio-group formControlName="typeUser">
+          <mat-radio-button value="modele">Vue modèle (gain de token)</mat-radio-button>
+          <mat-radio-button value="tipper">Vue tipper (envoie de token)</mat-radio-button>
+        </mat-radio-group>
+      </section>
+      <section>
+        <label>Type de graphique :</label>
+        <mat-radio-group formControlName="chartType">
+          <mat-radio-button value="bar">Barres</mat-radio-button>
+          <mat-radio-button value="line">Lignes</mat-radio-button>
+        </mat-radio-group>
+      </section>
+      <section *ngIf="dateLimits | async as limits">
+        <label>Intervale :</label>
+        <mat-form-field>
+          <input
+            matInput
+            [min]="limits.first"
+            [max]="limits.last"
+            [matDatepicker]="pickerMin"
+            placeholder="Debut intervale"
+            formControlName="dateMin"
+          />
+          <mat-datepicker-toggle matSuffix [for]="pickerMin"></mat-datepicker-toggle>
+          <mat-datepicker #pickerMin></mat-datepicker>
+        </mat-form-field>
+        <mat-form-field>
+          <input
+            matInput
+            [min]="limits.first"
+            [max]="limits.last"
+            [matDatepicker]="pickerMax"
+            placeholder="Fin intervale"
+            formControlName="dateMax"
+          />
+          <mat-datepicker-toggle matSuffix [for]="pickerMax"></mat-datepicker-toggle>
+          <mat-datepicker #pickerMax></mat-datepicker>
+        </mat-form-field>
+      </section>
+    </form>
+  </mat-card-content>
+</mat-card>
 <mat-divider></mat-divider>
 <div class="graph">
   <canvas
