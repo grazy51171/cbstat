@@ -7,8 +7,8 @@ import Dexie from 'dexie';
 
 import { ITransaction, CbStatisticDatabase } from './database/cb-statistic.database';
 
-function isValidDate(d: Date) {
-  return d instanceof Date && !isNaN(d.getTime());
+function isValidDate(d: DateTime) {
+  return d instanceof DateTime && d.isValid;
 }
 
 @Injectable({
@@ -66,14 +66,14 @@ export class StatTokenService {
     return stat;
   }
 
-  public async sumByDay(positive: boolean, dateMin: Date, dateMax: Date) {
+  public async sumByDay(positive: boolean, dateMin: DateTime, dateMax: DateTime) {
     const stat = new Map<string, Map<string, number>>();
     const dataSelect = this.cbStatisticDb.tipList
       .where('date')
       .inAnyRange([
         [
-          isValidDate(dateMin) ? dateMin : StatTokenService.allMinDate,
-          isValidDate(dateMax) ? dateMax : StatTokenService.allMaxDate,
+          isValidDate(dateMin) ? dateMin.toJSDate() : StatTokenService.allMinDate,
+          isValidDate(dateMax) ? dateMax.toJSDate() : StatTokenService.allMaxDate,
         ],
       ]);
 
@@ -186,13 +186,13 @@ export class StatTokenService {
     );
   }
 
-  public async tipBySize(positive: boolean, dateMin: Date, dateMax: Date, sizeLimit: number[]) {
+  public async tipBySize(positive: boolean, dateMin: DateTime, dateMax: DateTime, sizeLimit: number[]) {
     const dataSelect = this.cbStatisticDb.tipList
       .where('date')
       .inAnyRange([
         [
-          isValidDate(dateMin) ? dateMin : StatTokenService.allMinDate,
-          isValidDate(dateMax) ? dateMax : StatTokenService.allMaxDate,
+          isValidDate(dateMin) ? dateMin.toJSDate() : StatTokenService.allMinDate,
+          isValidDate(dateMax) ? dateMax.toJSDate() : StatTokenService.allMaxDate,
         ],
       ]);
 

@@ -66,8 +66,8 @@ export class TipByDateComponent implements OnInit {
   private readonly defaultOptions = {
     typeUser: 'tipper',
     chartType: 'bar' as ChartType,
-    dateMin: null as Date,
-    dateMax: null as Date,
+    dateMin: null as DateTime,
+    dateMax: null as DateTime,
   };
   constructor(private statToken: StatTokenService, private formBuilder: UntypedFormBuilder) {
     this.graphOptions = formBuilder.group(this.defaultOptions);
@@ -87,7 +87,7 @@ export class TipByDateComponent implements OnInit {
       .subscribe((val) => this.updateGraph(val));
   }
 
-  private updateGraph(val: { chartType: ChartType; typeUser: string; dateMin: Date; dateMax: Date }) {
+  private updateGraph(val: { chartType: ChartType; typeUser: string; dateMin: DateTime; dateMax: DateTime }) {
     this.chartType = val.chartType;
     this.statToken.sumByDay(val.typeUser !== 'tipper', val.dateMin, val.dateMax).then((tipByDate) => {
       const dateList = Array.from(tipByDate.keys());

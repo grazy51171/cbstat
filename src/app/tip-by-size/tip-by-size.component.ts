@@ -85,8 +85,8 @@ export class TipBySizeComponent implements OnInit {
   private readonly defaultOptions = {
     typeUser: 'tipper',
     chartType: 'bubble' as ChartType,
-    dateMin: null as Date,
-    dateMax: null as Date,
+    dateMin: null as DateTime,
+    dateMax: null as DateTime,
   };
   constructor(private statToken: StatTokenService, formBuilder: UntypedFormBuilder) {
     this.graphOptions = formBuilder.group(this.defaultOptions);
@@ -106,7 +106,7 @@ export class TipBySizeComponent implements OnInit {
       .subscribe((val) => this.updateGraph(val));
   }
 
-  private updateGraph(val: { chartType: ChartType; typeUser: string; dateMin: Date; dateMax: Date }) {
+  private updateGraph(val: { chartType: ChartType; typeUser: string; dateMin: DateTime; dateMax: DateTime }) {
     const sizes = [1, 10, 20, 50, 100, 200, 500, 1000, 1000000];
     this.chartType = val.chartType;
     this.statToken.tipBySize(val.typeUser !== 'tipper', val.dateMin, val.dateMax, sizes).then((tipBySize) => {
